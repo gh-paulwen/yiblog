@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+          "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
+	<constant name="struts.action.excludePattern" value="/ckfinder/core/connector/java/connector.java*" />
+    <package name="yiblog" extends="struts-default">
+    
+    	<interceptors>
+    		<interceptor name="loadCommentInterceptor" class="loadCommentInterceptor"/>
+    		<interceptor-stack name="loadCommentStack">
+    			<interceptor-ref name="defaultStack"/>
+    			<interceptor-ref name="loadCommentInterceptor"/>
+    		</interceptor-stack>
+    	</interceptors>
+    	
+    	
+    	<global-results>
+    		<result name="success">/success.jsp</result>
+    		<result name="input">/input.jsp</result>
+    		<result name="index" type="redirect">/index.jsp</result>
+    	</global-results>
+    	
+    	<action name="cate_*" class="categoryAction" method="{1}">
+    	<result name="showCate">/showCate.jsp</result>
+    	</action>
+    	
+    	<action name="pass_*" class="passageAction" method="{1}">
+    		<result name="viewPassage" type="dispatcher">/viewPassage.jsp</result>
+    		<result name="passageList" type="dispatcher">/passageList.jsp</result>
+    		<interceptor-ref name="loadCommentStack">
+    			<param name="passageid">${passage.id}</param>
+    		</interceptor-ref>
+    	</action>
+    	
+    	<action name="power_*" class="powerAction" method="{1}"></action>
+    	
+    	<action name="user_*" class="userAction" method="{1}">
+    		<result name="input">/signup.jsp</result>
+    	</action>
+    	
+    	<action name="comment_*" class="commentAction" method="{1}"></action>
+    	
+    	<action name="resource_*" class="resourceAction" method="{1}"></action>
+    	
+    	<action name="statistic_*" class="statisticAction" method="{1}"></action>
+    	
+    	<action name="subCategory_*" class="subCategoryAction" method="{1}"></action>
+    	
+    	<action name="reply_*" class="replyAction" method="{1}"></action>
+    	
+    	<action name="ajax_*" class="ajaxAction" method="{1}">
+    	</action>
+    	
+    	<action name="upload" class="uploadImageAction"></action>
+    </package> 
+</struts>

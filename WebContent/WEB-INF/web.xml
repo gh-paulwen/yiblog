@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!-- ckfinder的servlet -->
+	<servlet>
+		<servlet-name>ConnectorServlet</servlet-name>
+		<servlet-class>com.ckfinder.connector.ConnectorServlet</servlet-class>
+		<init-param>
+			<param-name>XMLConfig</param-name>
+			<param-value>/WEB-INF/ckfinder.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ConnectorServlet</servlet-name>
+		<url-pattern>/ckfinder/core/connector/java/connector.java</url-pattern>
+	</servlet-mapping>
+
+	<!-- 1. struts配置 -->
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- 配置spring -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>loadCategoryFilterProxy</filter-name>
+		<filter-class>me.paul.yiblog.filter.LoadCategoryFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loadCategoryFilterProxy</filter-name>
+		<url-pattern>/addPass.jsp</url-pattern>
+		<url-pattern>/addCates.jsp</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>loadBothCategoryFilterProxy</filter-name>
+		<filter-class>me.paul.yiblog.filter.LoadBothCategoryFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loadBothCategoryFilterProxy</filter-name>
+		<url-pattern>/index.jsp</url-pattern>
+		<url-pattern>/passageList.jsp</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>aggregateFilterProxy</filter-name>
+		<filter-class>me.paul.yiblog.filter.AggregateFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>aggregateFilterProxy</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>loadPassageFilterProxy</filter-name>
+		<filter-class>me.paul.yiblog.filter.LoadPassageFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loadPassageFilterProxy</filter-name>
+		<url-pattern>/index.jsp</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
