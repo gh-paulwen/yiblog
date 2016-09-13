@@ -71,7 +71,7 @@
 			listKey="id" listValue="name" name="category.id"></s:select>
 		<br>
 		子标题 :<select name="subCategory.id" id="subCategorySelect"></select>
-		作者id :<s:textfield name="author.id"></s:textfield>
+		<s:hidden name="author.id" value="%{#session.currentUser.id}"></s:hidden>
 		标题 :<s:textfield name="passage.title"></s:textfield>
 		文章内容 :<textarea name="passage.content"></textarea>
 		<s:submit />

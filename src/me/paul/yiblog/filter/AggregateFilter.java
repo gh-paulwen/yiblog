@@ -41,6 +41,11 @@ public class AggregateFilter implements Filter {
 					statService.update(stat);
 					session.setAttribute("comed", "true");
 					req.setAttribute("totalComed", stat.getTime());
+				}else{
+					Statistic statistic = new Statistic();
+					statistic.setWhat("total");
+					statistic.setTime(1);
+					statService.save(statistic);
 				}
 			}
 		}

@@ -24,7 +24,8 @@
 						</s:url>
 						<li class="list-group-item"><h4>
 								<a href="<s:property value="#url"/>"><s:property
-										value="%{#passage.title}" /></a><small>&nbsp;&nbsp; 作者:<s:property
+										value="#passage.title" /></a><small>&nbsp;&nbsp;分类:<s:property 
+										value="#passage.category.name"/>&nbsp;&nbsp; 作者:<s:property
 										value="#passage.author.name" />&nbsp;&nbsp; 阅读次数:<s:property
 										value="#passage.readtime" />&nbsp;&nbsp; 撰写时间:<s:property
 										value="#passage.writetime" /></small>
@@ -43,7 +44,8 @@
 						</s:url>
 						<li class="list-group-item"><h4>
 								<a href="<s:property value="#url"/>"><s:property
-										value="%{#passage.title}" /></a><small>&nbsp;&nbsp; 作者:<s:property
+										value="#passage.title" /></a><small>&nbsp;&nbsp;分类:<s:property 
+										value="#passage.category.name"/>&nbsp;&nbsp; 作者:<s:property
 										value="#passage.author.name" />&nbsp;&nbsp; 阅读次数:<s:property
 										value="#passage.readtime" />&nbsp;&nbsp; 撰写时间:<s:property
 										value="#passage.writetime" /></small>

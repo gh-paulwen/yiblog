@@ -16,7 +16,7 @@
 		<property name="writetime" type="java.util.Date">
 			<column name="writetime" sql-type="datetime" not-null="true"/>
 		</property>
-		<many-to-one name="category" class="Category" column="category"/>
+		<many-to-one name="category" class="Category" column="category" lazy="false"/>
 		<many-to-one name="subCategory" class="SubCategory" column="subCategory"/>
 		<property name="content" column="content" type="text"/>
 	</class>

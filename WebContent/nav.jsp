@@ -3,28 +3,24 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <head>
 <script type="text/javascript">
-	function onMouseOver(i) {
-		var listid = "#list" + i;
-		$(listid).show();
-	}
-	function onMouseLeave(i) {
-		var listid = "#list" + i;
-		$(listid).hide();
-	}
-
 	$(document).ready(function() {
-		$("#liadmin").hide();
+		
 		$("#lilogout").hide();
+		$("#liViewUsers").hide();
+		$("#liAddPassage").hide();
+		$("#liAddCates").hide();
 		if ($("#currentUserPower").attr("value") == 1) {
 			$("#lisignin").hide();
 			$("#lisignup").hide();
-			$("#liadmin").show();
 			$("#lilogout").show();
+			$("#liViewUsers").show();
+			$("#liAddPassage").show();
+			$("#liAddCates").show();
 		} else if ($("#currentUserPower").attr("value") == 2) {
 			$("#lisignin").hide();
 			$("#lisignup").hide();
 			$("#lilogout").show();
-		}
+		}		
 	});
 </script>
 </head>
@@ -41,14 +37,14 @@
 
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="${pageContext.request.contextPath }/index.jsp">Home</a></li>
 					<li id="lisignin"><a
-						href="${pageContext.request.contextPath }/signin.jsp">Sign in</a></li>
+						href="${pageContext.request.contextPath }/signin.jsp">登录</a></li>
 					<li id="lisignup"><a
-						href="${pageContext.request.contextPath }/signup.jsp">Sign up</a></li>
-					<li id="liadmin"><a href="#">Admin Action</a></li>
-					<li id="lilogout"><s:a action="user_logout">Logout</s:a></li>
-
+						href="${pageContext.request.contextPath }/signup.jsp">注册</a></li>
+					<li id="liViewUsers"><s:a action="">查看用户</s:a></li>
+					<li id="liAddPassage"><a href="${pageContext.request.contextPath}/addPass.jsp">写文章</a></li>
+					<li id="liAddCates"><a href="${pageContext.request.contextPath }/addCates.jsp">添加分类/子分类</a></li>
+					<li id="lilogout"><s:a action="user_logout">退出</s:a></li>
 				</ul>
 			</div>
 		</div>

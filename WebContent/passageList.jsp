@@ -13,18 +13,21 @@
 	<jsp:include page="nav.jsp"></jsp:include>
 	<jsp:include page="top.jsp"></jsp:include>
 	<div class="container">
-		<h1 class="text-danger">文章列表&nbsp;:&nbsp;${requestScope.currentCate}</h1><br>
+		<h1 class="text-danger">文章列表&nbsp;:&nbsp;${requestScope.currentCate}</h1>
+		<br>
 		<ul class="list-group">
 			<s:iterator value="%{#request.listPassage}" var="passage">
 				<s:url action="pass_get" var="url">
 					<s:param name="passage.id" value="%{#passage.id}" />
 				</s:url>
-				<li class="list-group-item"><h4><a
-					href="<s:property value="#url"/>"><s:property
-							value="%{#passage.title}" /></a><small>&nbsp;&nbsp;
-							作者:<s:property value="#passage.author.name"/>&nbsp;&nbsp;
-							阅读次数:<s:property value="#passage.readtime"/>&nbsp;&nbsp;
-							撰写时间:<s:property value="#passage.writetime"/></small></h4></li>
+				<li class="list-group-item"><h4>
+						<a href="<s:property value="#url"/>"><s:property
+								value="%{#passage.title}" /></a><small>&nbsp;&nbsp;分类:<s:property
+								value="#passage.category.name" />&nbsp;&nbsp; 作者:<s:property
+								value="#passage.author.name" />&nbsp;&nbsp; 阅读次数:<s:property
+								value="#passage.readtime" />&nbsp;&nbsp; 撰写时间:<s:property
+								value="#passage.writetime" /></small>
+					</h4></li>
 				<br>
 			</s:iterator>
 		</ul>
