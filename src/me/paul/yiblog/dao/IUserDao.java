@@ -15,5 +15,7 @@ public interface IUserDao {
 	User get(Serializable id);
 	
 	User getByName(String name);
+	
+	User getByEmail(String email);
 
 }

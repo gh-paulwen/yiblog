@@ -1,12 +1,19 @@
 package me.paul.yiblog.action;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Map;
+
+import javax.mail.MessagingException;
+
+import org.apache.struts2.ServletActionContext;
 
 import me.paul.yiblog.entity.Power;
 import me.paul.yiblog.entity.User;
 import me.paul.yiblog.service.IUserService;
 import me.paul.yiblog.util.CommonUtil;
+import me.paul.yiblog.util.JavaMailUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -65,4 +72,44 @@ public class UserAction extends ActionSupport {
 		}
 		return "index";
 	}
+	
+	public String checkEmail() throws IOException{
+		String email = user.getEmail();
+		User user = userService.getByEmail(email);
+		PrintWriter writer = ServletActionContext.getResponse().getWriter();
+		if(user == null){
+			writer.write("valid");
+		}else{
+			writer.write("unvalid");
+		}
+		writer.flush();
+		return null;
+	}
+	
+	public String checkName() throws IOException{
+		String name = user.getName();
+		User user = userService.getByName(name);
+		PrintWriter writer = ServletActionContext.getResponse().getWriter();
+		if(user == null){
+			writer.write("valid");
+		}else{
+			writer.write("unvalid");
+		}
+		writer.flush();
+		return null;
+	}
+	
+	public String sendVerifyEmail() throws IOException, MessagingException{
+		String email = user.getEmail();
+		if(email == null|| email.isEmpty())
+			return null;
+		String code = CommonUtil.generateVerifyCode();
+		//String content = "这是一封来自yiblog的验证邮件\n\n以下是你的验证代码:\n\t\t" + code;
+		JavaMailUtil.sendEmail(email,code);
+		PrintWriter writer = ServletActionContext.getResponse().getWriter();
+		writer.write(code);
+		writer.flush();
+		return null;
+	}
+	
 }

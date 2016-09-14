@@ -24,7 +24,7 @@ public class DateConverter extends StrutsTypeConverter{
 	@Override
 	public String convertToString(Map map, Object object) {
 		Date date = (Date) object ;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 hh时mm分ss秒");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		return sdf.format(date);
 	}
 

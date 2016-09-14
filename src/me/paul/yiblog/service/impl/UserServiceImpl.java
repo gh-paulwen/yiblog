@@ -39,4 +39,9 @@ public class UserServiceImpl implements IUserService {
 		return userDao.getByName(name);
 	}
 
+	@Override
+	public User getByEmail(String email) {
+		return userDao.getByEmail(email);
+	}
+
 }

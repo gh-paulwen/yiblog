@@ -44,4 +44,14 @@ public class UserDaoImpl implements IUserDao {
 		return null;
 	}
 
+	@Override
+	public User getByEmail(String email) {
+		String hql = "from User as u where u.email=?";
+		@SuppressWarnings("unchecked")
+		List<User> listUser = (List<User>) util.query(hql, email);
+		if(listUser.size() > 0)
+			return listUser.get(0);
+		return null;
+	}
+
 }
