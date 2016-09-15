@@ -38,7 +38,7 @@ public class ReplyDaoImpl implements IReplyDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Reply> getByComment(Serializable commentId) {
-		String hql = "from Reply r where r.comment = ?";
+		String hql = "from Reply r where r.comment.id = ?";
 		return (List<Reply>) util.query(hql, commentId);
 	}
 

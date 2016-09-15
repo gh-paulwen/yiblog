@@ -99,5 +99,10 @@ public class Comment {
 		return false;
 
 	}
+	
+	@Override
+	public int hashCode() {
+		return (int)id;
+	}
 
 }

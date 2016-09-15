@@ -41,7 +41,7 @@
 						href="${pageContext.request.contextPath }/signin.jsp">登录</a></li>
 					<li id="lisignup"><a
 						href="${pageContext.request.contextPath }/signup.jsp">注册</a></li>
-					<li id="liViewUsers"><s:a action="">查看用户</s:a></li>
+					<li id="liViewUsers"><s:a action="user_viewUsers?page=1&userPerPage=5">查看用户</s:a></li>
 					<li id="liAddPassage"><a href="${pageContext.request.contextPath}/addPass.jsp">写文章</a></li>
 					<li id="liAddCates"><a href="${pageContext.request.contextPath }/addCates.jsp">添加分类/子分类</a></li>
 					<li id="lilogout"><s:a action="user_logout">退出</s:a></li>

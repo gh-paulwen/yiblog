@@ -54,4 +54,17 @@ public class UserDaoImpl implements IUserDao {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> getUsers(int page, int userPerPage) {
+		String hql = "from User";
+		return (List<User>) util.limitQuery(hql, (page - 1) * userPerPage, userPerPage);
+	}
+
+	@Override
+	public int getUserCount() {
+		String hql = "select count(user) from User as user";
+		return util.getCount(hql);
+	}
+
 }

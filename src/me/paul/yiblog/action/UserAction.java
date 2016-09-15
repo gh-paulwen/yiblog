@@ -3,6 +3,7 @@ package me.paul.yiblog.action;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -19,7 +20,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class UserAction extends ActionSupport {
-	
+
 	private static final long serialVersionUID = -9213858011869747588L;
 
 	private User user;
@@ -37,9 +38,8 @@ public class UserAction extends ActionSupport {
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
 	}
-	
-	
-	public String getById(){
+
+	public String getById() {
 		long id = user.getId();
 		User user = userService.get(id);
 		ActionContext.getContext().getContextMap().put("viewUser", user);
@@ -57,67 +57,112 @@ public class UserAction extends ActionSupport {
 		synchronized (UserAction.class) {
 			userService.save(user);
 		}
-		return SUCCESS;
+		return "signin";
 	}
 
-	public String login(){
+	private int page;
+
+	private int userPerPage;
+	
+	private String lastUrl;
+	
+	public String getLastUrl() {
+		return lastUrl;
+	}
+	
+	public void setLastUrl(String lastUrl) {
+		this.lastUrl = lastUrl;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getUserPerPage() {
+		return userPerPage;
+	}
+
+	public void setUserPerPage(int userPerPage) {
+		this.userPerPage = userPerPage;
+	}
+
+	public String viewUsers() {
+		List<User> list = userService.getUsers(page, userPerPage);
+		int userCount = userService.getUserCount();
+		int pageCount = (int) Math.ceil(userCount * 1.0 / userPerPage);
+		Map<String,Integer> pageMap = CommonUtil.getPageMap(pageCount, page);
+		ActionContext.getContext().getContextMap().put("listUser", list);
+		ActionContext.getContext().getContextMap().put("pageMap", pageMap);
+		return "viewUsers";
+	}
+
+	public String login() {
 		User userGet = userService.getByName(user.getName());
-		if(userGet != null){
-			if(userGet.getPassword().trim().equalsIgnoreCase(CommonUtil.generateMD5(user.getPassword()))){
-				Map<String,Object> sessionMap = ActionContext.getContext().getSession();
+		if (userGet != null) {
+			if (userGet
+					.getPassword()
+					.trim()
+					.equalsIgnoreCase(
+							CommonUtil.generateMD5(user.getPassword()))) {
+				Map<String, Object> sessionMap = ActionContext.getContext()
+						.getSession();
 				sessionMap.put("currentUser", userGet);
 				userGet.setLastLoginDate(new Date());
 				userService.update(userGet);
 				return "index";
-			}							
+			}
 		}
 		return INPUT;
 	}
-	
-	public String logout(){
-		if(ActionContext.getContext().getSession().containsKey("currentUser")){
+
+	public String logout() {
+		if (ActionContext.getContext().getSession().containsKey("currentUser")) {
 			ActionContext.getContext().getSession().remove("currentUser");
 		}
 		return "index";
 	}
-	
-	public String checkEmail() throws IOException{
+
+	public String checkEmail() throws IOException {
 		String email = user.getEmail();
 		User user = userService.getByEmail(email);
 		PrintWriter writer = ServletActionContext.getResponse().getWriter();
-		if(user == null){
+		if (user == null) {
 			writer.write("valid");
-		}else{
+		} else {
 			writer.write("unvalid");
 		}
 		writer.flush();
 		return null;
 	}
-	
-	public String checkName() throws IOException{
+
+	public String checkName() throws IOException {
 		String name = user.getName();
 		User user = userService.getByName(name);
 		PrintWriter writer = ServletActionContext.getResponse().getWriter();
-		if(user == null){
+		if (user == null) {
 			writer.write("valid");
-		}else{
+		} else {
 			writer.write("unvalid");
 		}
 		writer.flush();
 		return null;
 	}
-	
-	public String sendVerifyEmail() throws IOException, MessagingException{
+
+	public String sendVerifyEmail() throws IOException, MessagingException {
 		String email = user.getEmail();
-		if(email == null|| email.isEmpty())
+		if (email == null || email.isEmpty())
 			return null;
 		String code = CommonUtil.generateVerifyCode();
-		//String content = "这是一封来自yiblog的验证邮件\n\n以下是你的验证代码:\n\t\t" + code;
-		JavaMailUtil.sendEmail(email,code);
+		// String content = "这是一封来自yiblog的验证邮件\n\n以下是你的验证代码:\n\t\t" + code;
+		JavaMailUtil.sendEmail(email, code);
 		PrintWriter writer = ServletActionContext.getResponse().getWriter();
 		writer.write(code);
 		writer.flush();
 		return null;
 	}
-	
+
 }

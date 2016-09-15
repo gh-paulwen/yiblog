@@ -11,9 +11,6 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class CommentAction extends ActionSupport {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5816530900340080938L;
 
 	private Comment comment;
@@ -70,7 +67,7 @@ public class CommentAction extends ActionSupport {
 		comment.setToUser(toUser);
 		comment.setNewComment(1);
 		commentService.save(comment);
-		return SUCCESS;
+		return "toPassage";
 	}
 
 }

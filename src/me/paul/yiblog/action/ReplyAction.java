@@ -12,9 +12,6 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class ReplyAction extends ActionSupport{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7911788803952912838L;
 	
 	private IReplyService replyService ;
@@ -69,6 +66,15 @@ public class ReplyAction extends ActionSupport{
 		this.reply = reply;
 	}
 	
+	private long passageid;
+	
+	public long getPassageid() {
+		return passageid;
+	}
+	
+	public void setPassageid(long passageid) {
+		this.passageid = passageid;
+	}
 	
 	public String save(){
 		reply.setFromUser(fromUser);
@@ -82,7 +88,7 @@ public class ReplyAction extends ActionSupport{
 			reply.setComment(comment);
 			replyService.save(reply);
 		}
-		return SUCCESS;
+		return "toPassage";
 	}
 
 }

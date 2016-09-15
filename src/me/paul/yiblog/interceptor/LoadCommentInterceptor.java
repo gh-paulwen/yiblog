@@ -1,12 +1,16 @@
 package me.paul.yiblog.interceptor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import me.paul.yiblog.entity.Comment;
 import me.paul.yiblog.entity.Passage;
+import me.paul.yiblog.entity.Reply;
 import me.paul.yiblog.service.ICommentService;
+import me.paul.yiblog.service.IReplyService;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -32,6 +36,12 @@ public class LoadCommentInterceptor implements Interceptor{
 	public void setCommentService(ICommentService commentService) {
 		this.commentService = commentService;
 	}
+	
+	private IReplyService replyService ;
+	
+	public void setReplyService(IReplyService replyService) {
+		this.replyService = replyService;
+	}
 
 	@Override
 	public String intercept(ActionInvocation invocation) throws Exception {
@@ -39,11 +49,13 @@ public class LoadCommentInterceptor implements Interceptor{
 		Passage passage = (Passage) request.getAttribute("passage");
 		if(passage == null) return invocation.invoke();
 		long passageid = passage.getId();
+		Map<Comment,List<Reply>> map = new HashMap<>(); 
 		List<Comment> listComment = commentService.getByPassage(passageid);
 		for(Comment c: listComment){
-			System.out.println(c.getFromUser().getName());
+			List<Reply> listReply = replyService.getByComment(c.getId());
+			map.put(c, listReply);
 		}
-		request.setAttribute("listComment", listComment);
+		request.setAttribute("mapComment", map);
 		request.setAttribute("listCommentSize", listComment.size());
 		return invocation.invoke();
 	}

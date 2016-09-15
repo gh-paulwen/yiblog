@@ -1,6 +1,7 @@
 package me.paul.yiblog.service.impl;
 
 import java.io.Serializable;
+import java.util.List;
 
 import me.paul.yiblog.dao.IUserDao;
 import me.paul.yiblog.entity.User;
@@ -42,6 +43,16 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public User getByEmail(String email) {
 		return userDao.getByEmail(email);
+	}
+
+	@Override
+	public List<User> getUsers(int page, int userPerPage) {
+		return userDao.getUsers(page, userPerPage);
+	}
+
+	@Override
+	public int getUserCount() {
+		return userDao.getUserCount();
 	}
 
 }

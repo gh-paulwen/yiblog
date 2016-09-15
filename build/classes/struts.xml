@@ -20,6 +20,7 @@
     		<result name="success">/success.jsp</result>
     		<result name="input">/input.jsp</result>
     		<result name="index" type="redirect">/index.jsp</result>
+    		<result name="signin" type="redirect">/signin.jsp</result>
     	</global-results>
     	
     	<action name="cate_*" class="categoryAction" method="{1}">
@@ -39,9 +40,17 @@
     	<action name="user_*" class="userAction" method="{1}">
     		<result name="input">/signup.jsp</result>
     		<result name="viewUser">/viewUser.jsp</result>
+    		<result name="viewUsers">/viewUsers.jsp</result>
+    		<result name="toLastUrl" type="redirectAction">
+    		</result>
     	</action>
     	
-    	<action name="comment_*" class="commentAction" method="{1}"></action>
+    	<action name="comment_*" class="commentAction" method="{1}">
+    		<result name="toPassage" type="redirectAction">
+    			<param name="actionName">pass_get</param>
+    			<param name="passage.id">${passage.id}</param>
+    		</result>
+    	</action>
     	
     	<action name="resource_*" class="resourceAction" method="{1}"></action>
     	
@@ -49,7 +58,12 @@
     	
     	<action name="subCategory_*" class="subCategoryAction" method="{1}"></action>
     	
-    	<action name="reply_*" class="replyAction" method="{1}"></action>
+    	<action name="reply_*" class="replyAction" method="{1}">
+    		<result name="toPassage" type="redirectAction">
+    			<param name="actionName">pass_get</param>
+    			<param name="passage.id">${passageid}</param>
+    		</result>
+    	</action>
     	
     	<action name="ajax_*" class="ajaxAction" method="{1}">
     	</action>

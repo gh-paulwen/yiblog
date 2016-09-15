@@ -197,6 +197,7 @@
 	<!-- interceptor -->
 	<bean id="loadCommentInterceptor" class="me.paul.yiblog.interceptor.LoadCommentInterceptor">
 		<property name="commentService" ref="commentService" />
+		<property name="replyService" ref="replyService"/>
 	</bean>
 	
 

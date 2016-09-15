@@ -2,6 +2,7 @@ package me.paul.yiblog.util;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -130,6 +131,20 @@ public class HibernateUtil {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	public int getCount(String hql){
+		Session session = factory.getCurrentSession();
+		session.beginTransaction();
+		int count = 0;
+		@SuppressWarnings("rawtypes")
+		Iterator iter = session.createQuery(hql).list().iterator();
+		if(iter.hasNext()){
+			Long longCount = (Long) iter.next();
+			count = longCount.intValue();
+		}
+		session.getTransaction().commit();
+		return count;
 	}
 
 }

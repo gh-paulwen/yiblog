@@ -63,17 +63,26 @@
 </script>
 </head>
 <body>
+	<jsp:include page="nav.jsp"></jsp:include>
 	<div class="container">
 	
 	<h1>添加文章</h1>
 	<s:form action="pass_save" method="POST" theme="simple">
-		<s:select id="categorySelect" list="%{#request.listCategory}"
-			listKey="id" listValue="name" name="category.id"></s:select>
-		<br>
-		子标题 :<select name="subCategory.id" id="subCategorySelect"></select>
 		<s:hidden name="author.id" value="%{#session.currentUser.id}"></s:hidden>
-		标题 :<s:textfield name="passage.title"></s:textfield>
-		文章内容 :<textarea name="passage.content"></textarea>
+		<table >
+			<tr>
+				<td>主标题 : </td>
+				<td><s:select id="categorySelect" list="%{#request.listCategory}"
+			listKey="id" listValue="name" name="category.id"></s:select></td>
+				<td>子标题 : </td>
+				<td><select name="subCategory.id" id="subCategorySelect"></select></td>
+			</tr>
+			<tr>
+				<td>标题 : </td>
+				<td><s:textfield name="passage.title"></s:textfield></td>
+			</tr>
+		</table>
+		<textarea name="passage.content"></textarea>
 		<s:submit />
 		
 	</s:form>

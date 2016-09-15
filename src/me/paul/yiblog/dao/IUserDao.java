@@ -1,6 +1,7 @@
 package me.paul.yiblog.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 import me.paul.yiblog.entity.User;
 
@@ -17,5 +18,8 @@ public interface IUserDao {
 	User getByName(String name);
 	
 	User getByEmail(String email);
+	
+	List<User> getUsers(int page,int userPerPage);
 
+	int getUserCount();
 }
