@@ -37,6 +37,14 @@ public class UserAction extends ActionSupport {
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
 	}
+	
+	
+	public String getById(){
+		long id = user.getId();
+		User user = userService.get(id);
+		ActionContext.getContext().getContextMap().put("viewUser", user);
+		return "viewUser";
+	}
 
 	public String save() {
 		Power power = new Power();

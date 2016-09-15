@@ -47,7 +47,7 @@ $(document).ready(function(){
 
 <style type="text/css">
 #divMain {
-	background-color:#fff;
+	background-color: #fff;
 }
 </style>
 </head>
@@ -66,30 +66,41 @@ $(document).ready(function(){
 			<s:textarea name="comment.content"></s:textarea>
 			<s:submit value="评论" />
 		</s:form>
-		<s:iterator value="%{#request.listComment}" status="vs" var="comment">
-			<div>
-				<s:property value="#comment.fromUser.name" />
-				&nbsp;:&nbsp;
-				<s:property value="#comment.content" />
-				&nbsp;&nbsp;&nbsp;&nbsp;
-				<button id="replyButton<s:property value="#vs.index"/>" class="test"
-					type="button"
-					onclick="showOrHideForm(<s:property value="#vs.index"/>)">回复</button>
-				<br>
-				<form id="replyForm<s:property value="#vs.index"/>"
-					action="${pageContext.request.contextPath }/reply_save"
-					method="POST">
-					<input type="hidden" name="comment.id"
-						value="<s:property value="#comment.id"/>"> <input
-						type="hidden" name="fromUser.id"
-						value="${sessionScope.currentUser.id }"> <input
-						type="hidden" name="toUser.id"
-						value="<s:property value="#comment.fromUser.id"/>">
-					<textarea rows="10" cols="40" name="reply.content"></textarea>
-					<input type="submit" value="提交">
-				</form>
-			</div>
-		</s:iterator>
+		<ul class="list-group">
+			<s:iterator value="%{#request.listComment}" status="vs" var="comment">
+				<li class="list-group-item">
+					<div>
+						<s:a action="user_getById?user.id=%{#comment.fromUser.id}"><s:property value="#comment.fromUser.name" /></s:a>
+						&nbsp;:&nbsp;
+						<s:property value="#comment.content" />
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button id="showReplyButton<s:property value="#vs.index"/>"
+							type="button"
+							onclick="showOrHideReply(<s:property value="#comment.id"/>,<s:property value="#vs.index"/>)">
+							共
+							<s:property value="#comment.replyCount" />
+							条回复
+						</button>
+						<button id="replyButton<s:property value="#vs.index"/>"
+							type="button"
+							onclick="showOrHideForm(<s:property value="#vs.index"/>)">回复</button>
+						<br>
+						<form id="replyForm<s:property value="#vs.index"/>"
+							action="${pageContext.request.contextPath }/reply_save"
+							method="POST">
+							<input type="hidden" name="comment.id"
+								value="<s:property value="#comment.id"/>"> <input
+								type="hidden" name="fromUser.id"
+								value="${sessionScope.currentUser.id }"> <input
+								type="hidden" name="toUser.id"
+								value="<s:property value="#comment.fromUser.id"/>">
+							<textarea rows="10" cols="40" name="reply.content"></textarea>
+							<input type="submit" value="提交">
+						</form>
+					</div>
+				</li>
+			</s:iterator>
+		</ul>
 	</div>
 	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
 </body>

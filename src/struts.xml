@@ -38,6 +38,7 @@
     	
     	<action name="user_*" class="userAction" method="{1}">
     		<result name="input">/signup.jsp</result>
+    		<result name="viewUser">/viewUser.jsp</result>
     	</action>
     	
     	<action name="comment_*" class="commentAction" method="{1}"></action>
