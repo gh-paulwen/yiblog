@@ -20,11 +20,6 @@ public class StatisticDaoImpl implements IStatisticDao{
 	}
 
 	@Override
-	public void delete(Statistic statistic) {
-		util.delete(statistic);
-	}
-
-	@Override
 	public void update(Statistic statistic) {
 		util.update(statistic);
 	}

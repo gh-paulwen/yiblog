@@ -21,11 +21,6 @@ public class SubCategoryServiceImpl implements ISubCategoryService {
 	}
 
 	@Override
-	public void delete(SubCategory subCategory) {
-		subCategoryDao.delete(subCategory);		
-	}
-
-	@Override
 	public void update(SubCategory subCategory) {
 		subCategoryDao.update(subCategory);
 	}

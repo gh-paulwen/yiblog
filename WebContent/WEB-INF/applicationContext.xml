@@ -21,6 +21,7 @@
 		<property name="password" value="2292" />
 	</bean>
 
+	<!-- Hibernate Session Factory -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
 		destroy-method="destroy">
@@ -41,10 +42,10 @@
 				<value>hbm/Passage.hbm.xml</value>
 				<value>hbm/Power.hbm.xml</value>
 				<value>hbm/Reply.hbm.xml</value>
-				<value>hbm/Resource.hbm.xml</value>
 				<value>hbm/Statistic.hbm.xml</value>
 				<value>hbm/SubCategory.hbm.xml</value>
 				<value>hbm/User.hbm.xml</value>
+				<value>hbm/Announcement.hbm.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -67,15 +68,7 @@
 		scope="singleton">
 		<property name="util" ref="hibernateUtil" />
 	</bean>
-	<bean id="powerDao" class="me.paul.yiblog.dao.impl.PowerDaoImpl"
-		scope="singleton">
-		<property name="util" ref="hibernateUtil" />
-	</bean>
 	<bean id="userDao" class="me.paul.yiblog.dao.impl.UserDaoImpl"
-		scope="singleton">
-		<property name="util" ref="hibernateUtil" />
-	</bean>
-	<bean id="resourceDao" class="me.paul.yiblog.dao.impl.ResourceDaoImpl"
 		scope="singleton">
 		<property name="util" ref="hibernateUtil" />
 	</bean>
@@ -88,6 +81,10 @@
 		<property name="util" ref="hibernateUtil" />
 	</bean>
 	<bean id="replyDao" class="me.paul.yiblog.dao.impl.ReplyDaoImpl"
+		scope="singleton">
+		<property name="util" ref="hibernateUtil" />
+	</bean>
+	<bean id="announcementDao" class="me.paul.yiblog.dao.impl.AnnouncementDaoImpl"
 		scope="singleton">
 		<property name="util" ref="hibernateUtil" />
 	</bean>
@@ -106,17 +103,9 @@
 		scope="singleton">
 		<property name="commentDao" ref="commentDao" />
 	</bean>
-	<bean id="powerService" class="me.paul.yiblog.service.impl.PowerServiceImpl"
-		scope="singleton">
-		<property name="powerDao" ref="powerDao" />
-	</bean>
 	<bean id="userService" class="me.paul.yiblog.service.impl.UserServiceImpl"
 		scope="singleton">
 		<property name="userDao" ref="userDao" />
-	</bean>
-	<bean id="resourceService" class="me.paul.yiblog.service.impl.ResourceServiceImpl"
-		scope="singleton">
-		<property name="resourceDao" ref="resourceDao" />
 	</bean>
 	<bean id="statisticService" class="me.paul.yiblog.service.impl.StatisticServiceImpl"
 		scope="singleton">
@@ -130,6 +119,10 @@
 		scope="singleton">
 		<property name="replyDao" ref="replyDao" />
 	</bean>
+	<bean id="announcementService" class="me.paul.yiblog.service.impl.AnnouncementServiceImpl"
+		scope="singleton">
+		<property name="announcementDao" ref="announcementDao" />
+	</bean>
 
 	<!-- action -->
 	<bean id="categoryAction" class="me.paul.yiblog.action.CategoryAction"
@@ -140,27 +133,16 @@
 		scope="prototype">
 		<property name="passService" ref="passageService" />
 		<property name="cateService" ref="categoryService" />
-		<property name="subCategoryService" ref="subCategoryService"></property>
+		<property name="subCategoryService" ref="subCategoryService"/>
+		<property name="announcementService" ref="announcementService"/>
 	</bean>
 	<bean id="commentAction" class="me.paul.yiblog.action.CommentAction"
 		scope="prototype">
 		<property name="commentService" ref="commentService"></property>
 	</bean>
-	<bean id="powerAction" class="me.paul.yiblog.action.PowerAction"
-		scope="prototype">
-		<property name="powerService" ref="powerService"></property>
-	</bean>
 	<bean id="userAction" class="me.paul.yiblog.action.UserAction"
 		scope="prototype">
 		<property name="userService" ref="userService"></property>
-	</bean>
-	<bean id="resourceAction" class="me.paul.yiblog.action.ResourceAction"
-		scope="prototype">
-		<property name="resourceService" ref="resourceService"></property>
-	</bean>
-	<bean id="statisticAction" class="me.paul.yiblog.action.StatisticAction"
-		scope="prototype">
-		<property name="statisticService" ref="statisticService"></property>
 	</bean>
 	<bean id="subCategoryAction" class="me.paul.yiblog.action.SubCategoryAction"
 		scope="prototype">
@@ -172,11 +154,10 @@
 		<property name="replyService" ref="replyService"></property>
 		<property name="commentService" ref="commentService"></property>
 	</bean>
-	<bean id="uploadImageAction" class="me.paul.yiblog.action.UploadImageAction"
+	<bean id="announcementAction" class="me.paul.yiblog.action.AnnouncementAction"
 		scope="prototype">
-			
+		<property name="announcementService" ref="announcementService"></property>
 	</bean>
-
 
 	<!-- filter -->
 	<bean id="loadCategoryFilter" class="me.paul.yiblog.filter.LoadCategoryFilter">
@@ -185,13 +166,16 @@
 	<bean id="aggregateFilter" class="me.paul.yiblog.filter.AggregateFilter">
 		<property name="statService" ref="statisticService" />
 	</bean>
-	<bean id="loadBothCategoryFilter" class="me.paul.yiblog.filter.LoadBothCategoryFilter">
-		<property name="categoryService" ref="categoryService" />
-		<property name="subCategoryService" ref="subCategoryService" />
-	</bean>
 	<bean id="loadPassageFilter" class="me.paul.yiblog.filter.LoadPassageFilter">
 		<property name="count" value="5"></property>
 		<property name="passageService" ref="passageService"></property>
+	</bean>
+	<bean id="loadAnnouncementFilter" class="me.paul.yiblog.filter.LoadAnnouncementFilter">
+		<property name="announcementService" ref="announcementService"/>
+	</bean>
+	<bean id="loadSiteInfoFilter" class="me.paul.yiblog.filter.LoadSiteInfoFilter">
+		<property name="announcementService" ref="announcementService"/>
+		<property name="statisticService" ref="statisticService"/>
 	</bean>
 
 	<!-- interceptor -->

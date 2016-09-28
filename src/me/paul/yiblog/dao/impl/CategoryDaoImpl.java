@@ -21,11 +21,6 @@ public class CategoryDaoImpl implements ICategoryDao{
 	}
 
 	@Override
-	public void delete(Category c) {
-		util.delete(c);
-	}
-
-	@Override
 	public void update(Category c) {
 		util.update(c);
 	}

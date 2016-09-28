@@ -2,16 +2,17 @@ package me.paul.yiblog.action;
 
 import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import me.paul.yiblog.entity.Announcement;
 import me.paul.yiblog.entity.Category;
 import me.paul.yiblog.entity.Passage;
 import me.paul.yiblog.entity.SubCategory;
 import me.paul.yiblog.entity.User;
+import me.paul.yiblog.service.IAnnouncementService;
 import me.paul.yiblog.service.ICategoryService;
 import me.paul.yiblog.service.IPassageService;
 import me.paul.yiblog.service.ISubCategoryService;
@@ -27,8 +28,16 @@ public class PassageAction extends ActionSupport {
 	private static final long serialVersionUID = 1306752896985884525L;
 
 	private IPassageService passService;
+	
 	private ICategoryService cateService;
+	
 	private ISubCategoryService subCategoryService;
+	
+	private IAnnouncementService announcementService;
+	
+	public void setAnnouncementService(IAnnouncementService announcementService) {
+		this.announcementService = announcementService;
+	}
 
 	public void setSubCategoryService(ISubCategoryService subCategoryService) {
 		this.subCategoryService = subCategoryService;
@@ -43,30 +52,27 @@ public class PassageAction extends ActionSupport {
 	}
 
 	private Passage passage;
+	
 	private Category category;
+	
 	private SubCategory subCategory;
+	
 	private User author;
+	
 	private int page;
+	
 	private int passagePerPage;
-	private String what;
-	private String searchContent;
-
-	public String getWhat() {
-		return what;
+	
+	private String order;
+	
+	public String getOrder() {
+		return order;
 	}
-
-	public void setWhat(String what) {
-		this.what = what;
+	
+	public void setOrder(String order) {
+		this.order = order;
 	}
-
-	public String getSearchContent() {
-		return searchContent;
-	}
-
-	public void setSearchContent(String searchContent) {
-		this.searchContent = searchContent;
-	}
-
+	
 	public int getPassagePerPage() {
 		return passagePerPage;
 	}
@@ -111,6 +117,7 @@ public class PassageAction extends ActionSupport {
 		this.category = category;
 	}
 
+	//添加文章
 	public String save() {
 		passage.setCategory(category);
 		passage.setReadtime(0);
@@ -125,19 +132,22 @@ public class PassageAction extends ActionSupport {
 			cateService.update(category);
 			subCategoryService.update(subCategory);
 			passService.save(passage);
+			Announcement announcement = announcementService.get(3l);
+			announcement.setTime(new Date());
+			announcementService.update(announcement);
 		}
-		return SUCCESS;
+		return "index";
 	}
 
+	//获取文章
 	public String get() {
 		HttpSession session = ServletActionContext.getRequest().getSession();
 		passage = passService.get(passage.getId());
 		@SuppressWarnings("unchecked")
 		List<Long> hasReadPassages = (List<Long>) session.getAttribute("read");
-		if (hasReadPassages == null) {
-			hasReadPassages = new LinkedList<Long>();
+		if(hasReadPassages == null){
+			return "input";
 		}
-
 		if (!hasReadPassages.contains(passage.getId())) {
 			synchronized (PassageAction.class) {
 				passage.setReadtime(passage.getReadtime() + 1);
@@ -150,37 +160,73 @@ public class PassageAction extends ActionSupport {
 		ActionContext.getContext().getContextMap().put("passage", passage);
 		return "viewPassage";
 	}
+	
+	//获取文章以编辑
+	public String editPassage(){
+		long id = passage.getId();
+		Passage passage = passService.get(id);
+		ActionContext.getContext().getContextMap().put("passageGet", passage);
+		System.out.println(passage.getContent());
+		return "editPassage";
+	}
+	
+	//确定提交编辑
+	public synchronized String submitUpdate(){
+		Passage passageGet = passService.get(passage.getId());
+		passageGet.setContent(passage.getContent());
+		passageGet.setTitle(passage.getTitle());
+		passageGet.setCategory(category);
+		passageGet.setSubCategory(subCategory);
+		passService.update(passageGet);
+		return "index";
+	}
 
+	//分页
 	public String page() {
-		
 		int count = 0;
-		
 		List<Passage> list = Collections.emptyList();
-		
+		Map<String,Object> request = ActionContext.getContext().getContextMap();
 		if(category != null){
 			category = cateService.get(category.getId());
 			count = category.getPassageCount();
-			ActionContext.getContext().getContextMap().put("currentCate", category.getName());
-			list = passService.categoryPage(page, passagePerPage, category.getId());
+			request.put("currentCate", category.getName());
+			List<SubCategory> listSub = subCategoryService.getByCategory(category.getId());
+			request.put("listSubCategory", listSub);
+			request.put("subCategoryCount", listSub.size());
+			if(order==null){
+				list = passService.categoryPage(page, passagePerPage, category.getId());
+			}else if(order.equals("reverse")){
+				list = passService.categoryPage(page, count, category.getId(), true);
+			}
+			
 		}
-		
 		if(subCategory != null){
 			subCategory = subCategoryService.get(subCategory.getId());
 			count = subCategory.getPassageCount();
-			ActionContext.getContext().getContextMap().put("currentCate", subCategory.getName());
-			list = passService.subCategoryPage(page, passagePerPage, subCategory.getId());
+			request.put("currentCate", subCategory.getName());
+			if(order== null){
+				list = passService.subCategoryPage(page, passagePerPage, subCategory.getId());
+			}else if(order.equals("reverse")){
+				list = passService.subCategoryPage(page, passagePerPage, subCategory.getId(),true);
+			}
 		}
-		
 		if(category == null && subCategory == null){
 			count = cateService.getTotalPassageCount();
-			ActionContext.getContext().getContextMap().put("currentCate", "all");
-			list = passService.page(page, passagePerPage);
+			request.put("currentCate", "all");
+			if(order == null){
+				list = passService.page(page, passagePerPage);
+			}else if(order.equals("reverse")){
+				list = passService.page(page, passagePerPage,true);
+			}
 		}
-		
 		int pageCount = (int) Math.ceil(count * 1.0 / passagePerPage);
 		Map<String, Integer> mapPage = CommonUtil.getPageMap(pageCount, page);
-		ActionContext.getContext().getContextMap().put("listPassage", list);
-		ActionContext.getContext().getContextMap().put("mapPage", mapPage);
+		request.put("listPassage", list);
+		request.put("mapPage", mapPage);
+		request.put("currentPage", page);
+		request.put("nextPage", page + 1);
+		request.put("lastPage", page - 1);
+		request.put("pageCount", pageCount);
 		return "passageList";
 	}
 }

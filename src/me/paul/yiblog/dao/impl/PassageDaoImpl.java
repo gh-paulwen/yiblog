@@ -21,11 +21,6 @@ public class PassageDaoImpl implements IPassageDao {
 	}
 
 	@Override
-	public void delete(Passage passage) {
-		util.delete(passage);
-	}
-
-	@Override
 	public void update(Passage passage) {
 		util.update(passage);
 	}
@@ -69,6 +64,29 @@ public class PassageDaoImpl implements IPassageDao {
 	public List<Passage> latest(int count) {
 		String hql = "from Passage as p order by p.writetime desc";
 		return (List<Passage>) util.limitQuery(hql, 0, count);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Passage> page(int n, int passagePerPage, boolean time) {
+		String hql = "from Passage as p order by p.writetime desc";
+		return (List<Passage>) util.limitQuery(hql, (n -1 ) * passagePerPage, passagePerPage);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Passage> categoryPage(int n, int passagePerPage,
+			long categoryId, boolean time) {
+		String hql = "from Passage as p where p.category.id = ? order by p.writetime desc";
+		return (List<Passage>) util.limitQuery(hql, (n -1 ) * passagePerPage, passagePerPage,categoryId);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Passage> subCategoryPage(int n, int passagePerPage,
+			long subCategoryId, boolean time) {
+		String hql = "from Passage as p where p.subCategory.id = ? order by p.writetime desc";
+		return (List<Passage>) util.limitQuery(hql, (n -1 ) * passagePerPage, passagePerPage,subCategoryId);
 	}
 	
 }

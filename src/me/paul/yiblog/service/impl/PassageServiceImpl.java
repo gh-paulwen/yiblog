@@ -25,11 +25,6 @@ public class PassageServiceImpl implements IPassageService {
 	}
 
 	@Override
-	public void delete(Passage passage) {
-		passDao.delete(passage);
-	}
-
-	@Override
 	public Passage get(Serializable id) {
 		return passDao.get(id);
 	}
@@ -58,6 +53,23 @@ public class PassageServiceImpl implements IPassageService {
 	@Override
 	public List<Passage> latest(int count) {
 		return passDao.latest(count);
+	}
+
+	@Override
+	public List<Passage> page(int n, int passagePerPage, boolean time) {
+		return passDao.page(n, passagePerPage, time);
+	}
+
+	@Override
+	public List<Passage> categoryPage(int n, int passagePerPage,
+			long categoryId, boolean time) {
+		return passDao.categoryPage(n, passagePerPage, categoryId, time);
+	}
+
+	@Override
+	public List<Passage> subCategoryPage(int n, int passagePerPage,
+			long subCategoryId, boolean time) {
+		return passDao.subCategoryPage(n, passagePerPage, subCategoryId, time);
 	}
 
 }

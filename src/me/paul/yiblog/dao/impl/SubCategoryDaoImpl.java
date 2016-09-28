@@ -21,11 +21,6 @@ public class SubCategoryDaoImpl implements ISubCategoryDao{
 	}
 
 	@Override
-	public void delete(SubCategory subCategory) {
-		util.delete(subCategory);
-	}
-
-	@Override
 	public void update(SubCategory subCategory) {
 		util.update(subCategory);
 	}

@@ -28,52 +28,11 @@ public class UserAction extends ActionSupport {
 	public User getUser() {
 		return user;
 	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	private IUserService userService;
-
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
-	}
-
-	public String getById() {
-		long id = user.getId();
-		User user = userService.get(id);
-		ActionContext.getContext().getContextMap().put("viewUser", user);
-		return "viewUser";
-	}
-
-	public String save() {
-		Power power = new Power();
-		power.setId(2);
-		user.setPower(power);
-		user.setPassword(CommonUtil.generateMD5(user.getPassword()));
-		Date date = new Date();
-		user.setRegisterDate(date);
-		user.setLastLoginDate(date);
-		synchronized (UserAction.class) {
-			userService.save(user);
-		}
-		return "signin";
-	}
-
+	
 	private int page;
 
 	private int userPerPage;
 	
-	private String lastUrl;
-	
-	public String getLastUrl() {
-		return lastUrl;
-	}
-	
-	public void setLastUrl(String lastUrl) {
-		this.lastUrl = lastUrl;
-	}
-
 	public int getPage() {
 		return page;
 	}
@@ -90,21 +49,64 @@ public class UserAction extends ActionSupport {
 		this.userPerPage = userPerPage;
 	}
 
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	private IUserService userService;
+
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
+	}
+	
+	//查看用户信息
+	public String getById() {
+		long id = user.getId();
+		user = userService.get(id);
+		ActionContext.getContext().getContextMap().put("viewUser", user);
+		return "viewUser";
+	}
+
+	//注册用户
+	public String save() {
+		
+		Power power = new Power();
+		power.setId(2);
+		user.setPower(power);
+		user.setPassword(CommonUtil.generateMD5(user.getPassword()));
+		Date date = new Date();
+		user.setRegisterDate(date);
+		user.setLastLoginDate(date);
+		synchronized (UserAction.class) {
+			userService.save(user);
+		}
+		return "signin";
+	}
+
+	//用户列表
 	public String viewUsers() {
 		List<User> list = userService.getUsers(page, userPerPage);
 		int userCount = userService.getUserCount();
 		int pageCount = (int) Math.ceil(userCount * 1.0 / userPerPage);
 		Map<String,Integer> pageMap = CommonUtil.getPageMap(pageCount, page);
-		ActionContext.getContext().getContextMap().put("listUser", list);
-		ActionContext.getContext().getContextMap().put("pageMap", pageMap);
+		Map<String,Object> request = ActionContext.getContext().getContextMap(); 
+		request.put("listUser", list);
+		request.put("pageMap", pageMap);
+		request.put("currentPage", page);
+		request.put("nextPage", page + 1);
+		request.put("lastPage", page - 1);
+		request.put("pageCount", pageCount);
 		return "viewUsers";
 	}
 
+	//登录
 	public String login() {
 		User userGet = userService.getByName(user.getName());
+		if(userGet == null){
+			userGet = userService.getByEmail(user.getName());
+		}
 		if (userGet != null) {
-			if (userGet
-					.getPassword()
+			if (userGet.getPassword()
 					.trim()
 					.equalsIgnoreCase(
 							CommonUtil.generateMD5(user.getPassword()))) {
@@ -116,9 +118,11 @@ public class UserAction extends ActionSupport {
 				return "index";
 			}
 		}
-		return INPUT;
+		ActionContext.getContext().getContextMap().put("loginError", "用户名或密码错误");
+		return "signin";
 	}
 
+	//退出
 	public String logout() {
 		if (ActionContext.getContext().getSession().containsKey("currentUser")) {
 			ActionContext.getContext().getSession().remove("currentUser");
@@ -126,6 +130,7 @@ public class UserAction extends ActionSupport {
 		return "index";
 	}
 
+	//ajax 查询邮箱是否已经被占用
 	public String checkEmail() throws IOException {
 		String email = user.getEmail();
 		User user = userService.getByEmail(email);
@@ -139,6 +144,7 @@ public class UserAction extends ActionSupport {
 		return null;
 	}
 
+	//ajax 查询用户名是否已经被占用
 	public String checkName() throws IOException {
 		String name = user.getName();
 		User user = userService.getByName(name);
@@ -152,10 +158,14 @@ public class UserAction extends ActionSupport {
 		return null;
 	}
 
+	//ajax请求发送验证码
 	public String sendVerifyEmail() throws IOException, MessagingException {
 		String email = user.getEmail();
 		if (email == null || email.isEmpty())
 			return null;
+		if(!email.matches(".+@.+")){
+			return null;
+		}
 		String code = CommonUtil.generateVerifyCode();
 		// String content = "这是一封来自yiblog的验证邮件\n\n以下是你的验证代码:\n\t\t" + code;
 		JavaMailUtil.sendEmail(email, code);
@@ -164,5 +174,25 @@ public class UserAction extends ActionSupport {
 		writer.flush();
 		return null;
 	}
-
+	
+	//获取用户信息以编辑
+	public String editProfile(){
+		long id = user.getId();
+		User userGet = userService.get(id);
+		ActionContext.getContext().getContextMap().put("userGet", userGet);
+		return "editUser";
+	}
+	
+	//提交编辑
+	public synchronized String submitUpdate(){
+		User userGet = userService.get(user.getId());
+		userGet.setBirthDate(user.getBirthDate());
+		userGet.setName(user.getName());
+		userGet.setPhonenumber(user.getPhonenumber());
+		userGet.setSex(user.getSex());
+		userService.update(userGet);
+		ActionContext.getContext().getContextMap().put("viewUser", userGet);
+		return "viewUser";
+	}
+	
 }

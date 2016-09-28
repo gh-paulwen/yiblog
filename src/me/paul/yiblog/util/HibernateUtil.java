@@ -66,7 +66,6 @@ public class HibernateUtil {
 			obj = session.get(c, id);
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
-			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return obj;
@@ -85,7 +84,6 @@ public class HibernateUtil {
 			list = q.list();
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
-			session.getTransaction().rollback();
 			e.printStackTrace();
 		}
 		return list;
@@ -133,12 +131,17 @@ public class HibernateUtil {
 		return list;
 	}
 	
-	public int getCount(String hql){
+	public int getCount(String hql,Object... params){
 		Session session = factory.getCurrentSession();
 		session.beginTransaction();
 		int count = 0;
+		
+		Query q = session.createQuery(hql);
+		for(int i=0;i<params.length;i++){
+			q.setParameter(i, params[i]);
+		}
 		@SuppressWarnings("rawtypes")
-		Iterator iter = session.createQuery(hql).list().iterator();
+		Iterator iter = q.list().iterator();
 		if(iter.hasNext()){
 			Long longCount = (Long) iter.next();
 			count = longCount.intValue();

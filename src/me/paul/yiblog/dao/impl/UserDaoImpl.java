@@ -21,11 +21,6 @@ public class UserDaoImpl implements IUserDao {
 	}
 
 	@Override
-	public void delete(User user) {
-		util.delete(user);
-	}
-
-	@Override
 	public void update(User user) {
 		util.update(user);
 	}

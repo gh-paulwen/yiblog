@@ -21,11 +21,6 @@ public class CommentDaoImpl implements ICommentDao{
 	}
 
 	@Override
-	public void delete(Comment comment) {
-		util.delete(comment);
-	}
-
-	@Override
 	public void update(Comment comment) {
 		util.update(comment);
 	}
@@ -41,5 +36,39 @@ public class CommentDaoImpl implements ICommentDao{
 		String hql = "from Comment c where c.passage.id = ?";		
 		return (List<Comment>) util.query(hql, passageid);
 	}
+
+	@Override
+	public int getNewCommentCount(long toUserId) {
+		int count = 0;
+		String hql = "select count(c) from Comment c where c.toUser.id = ? and c.newComment = 1";
+		count = util.getCount(hql,toUserId);
+		return count;
+	}
+
+	@Override
+	public List<Comment> getNewComment(long toUserId) {
+		String hql = "from Comment c where c.toUser.id = ? and c.newComment = 1";
+		@SuppressWarnings("unchecked")
+		List<Comment> list = (List<Comment>) util.query(hql, toUserId);
+		return list;
+	}
+
+	@Override
+	public List<Comment> getComment(long toUserId, int page, int commentPerPage) {
+		String hql = "from Comment c where c.toUser.id = ? ";
+		@SuppressWarnings("unchecked")
+		List<Comment> list = (List<Comment>) util.limitQuery(hql, (page - 1) * commentPerPage, commentPerPage, toUserId);
+		return list;
+	}
+
+	@Override
+	public int getAllCommentCount(long toUserId) {
+		String hql = "select count(c) from Comment as c where c.toUser.id = ?";
+		int count = 0;
+		count = util.getCount(hql, toUserId);
+		return count;
+	}
+	
+	
 
 }

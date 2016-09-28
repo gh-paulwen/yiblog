@@ -9,7 +9,7 @@
 		<id name="id" column="id" type="long">
 			<generator class="native"/>
 		</id>
-		<many-to-one name="category" class="Category" column="category"/>
+		<many-to-one name="category" class="Category" column="category" cascade="delete"/>
 		<property name="name" column="name" type="string" length="30"/>
 		<property name="passageCount" column="passageCount" type="integer"></property>
 	</class>

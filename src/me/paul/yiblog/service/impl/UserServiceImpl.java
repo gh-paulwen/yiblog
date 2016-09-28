@@ -21,11 +21,6 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public void delete(User user) {
-		userDao.delete(user);
-	}
-
-	@Override
 	public void update(User user) {
 		userDao.update(user);
 	}

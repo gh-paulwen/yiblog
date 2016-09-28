@@ -8,9 +8,9 @@
 		<id name="id" column="id" type="long">
 			<generator class="native"/>
 		</id> 
-		<many-to-one name="comment" column="comment" class="Comment" lazy="false"/>
-		<many-to-one name="fromUser" column="fromUser" class="User" lazy="false"/>
-		<many-to-one name="toUser" column="toUser" class="User" lazy="false"/>
+		<many-to-one name="comment" column="comment" class="Comment" lazy="false" cascade="delete"/>
+		<many-to-one name="fromUser" column="fromUser" class="User" lazy="false" cascade="delete"/>
+		<many-to-one name="toUser" column="toUser" class="User" lazy="false" cascade="delete"/>
 		
 		<property name="content" column="content" type="string"/>
 		<property name="replytime" type="java.util.Date">

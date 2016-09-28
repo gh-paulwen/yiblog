@@ -9,8 +9,6 @@ public interface IUserDao {
 
 	void save(User user);
 
-	void delete(User user);
-
 	void update(User user);
 
 	User get(Serializable id);

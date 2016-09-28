@@ -54,13 +54,15 @@ public class SubCategoryAction extends ActionSupport {
 		this.subCategory = subCategory;
 	}
 
+	//添加subCategory
 	public String save() {
 		Category cate = categoryService.get(category.getId());
 		subCategory.setCategory(cate);
 		subCategoryService.save(subCategory);
-		return SUCCESS;
+		return "index";
 	}
 	
+	//ajax用cagory id 获取subCategory xml
 	public String getXmlByCategory() throws  IOException{
 		List<SubCategory> list = subCategoryService.getByCategory(category.getId());
 		DocumentFactory docfactory = new DocumentFactory();

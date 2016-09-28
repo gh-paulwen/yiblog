@@ -21,11 +21,6 @@ public class CategoryServiceImpl implements ICategoryService {
 	}
 
 	@Override
-	public void delete(Category c) {
-		cateDao.delete(c);
-	}
-
-	@Override
 	public void update(Category c) {
 		cateDao.update(c);
 	}

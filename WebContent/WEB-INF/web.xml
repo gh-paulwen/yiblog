@@ -4,6 +4,12 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
+
+	<mime-mapping>
+		<extension>xml</extension>
+		<mime-type>text/xml</mime-type>
+	</mime-mapping>
+
 	<!-- ckfinder的servlet -->
 	<servlet>
 		<servlet-name>ConnectorServlet</servlet-name>
@@ -33,38 +39,39 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+		<!-- session 监听器 -->
+	<listener>
+		<listener-class>me.paul.yiblog.listener.SessionLifeCycleListener</listener-class>
+	</listener>
+
+
 	<!-- 配置spring -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/applicationContext.xml</param-value>
 	</context-param>
-
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+
+
+	<!-- 用于加载category -->
 	<filter>
 		<filter-name>loadCategoryFilterProxy</filter-name>
 		<filter-class>me.paul.yiblog.filter.LoadCategoryFilterProxy</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>loadCategoryFilterProxy</filter-name>
-		<url-pattern>/addPass.jsp</url-pattern>
-		<url-pattern>/addCates.jsp</url-pattern>
-	</filter-mapping>
-
-	<filter>
-		<filter-name>loadBothCategoryFilterProxy</filter-name>
-		<filter-class>me.paul.yiblog.filter.LoadBothCategoryFilterProxy</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>loadBothCategoryFilterProxy</filter-name>
+		<url-pattern>/admin/addPass.jsp</url-pattern>
+		<url-pattern>/admin/addCates.jsp</url-pattern>
+		<url-pattern>/admin/editPassage.jsp</url-pattern>
 		<url-pattern>/index.jsp</url-pattern>
-		<url-pattern>/passageList.jsp</url-pattern>
-		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
 
+	<!-- 用于计数网站的访问量 -->
 	<filter>
 		<filter-name>aggregateFilterProxy</filter-name>
 		<filter-class>me.paul.yiblog.filter.AggregateFilterProxy</filter-class>
@@ -74,6 +81,7 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<!-- 加载首页的文章 -->
 	<filter>
 		<filter-name>loadPassageFilterProxy</filter-name>
 		<filter-class>me.paul.yiblog.filter.LoadPassageFilterProxy</filter-class>
@@ -83,9 +91,49 @@
 		<url-pattern>/index.jsp</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
-
-
-
+	
+	<!-- 粗粒度权限管理 -->
+	<filter>
+		<filter-name>adminPowerControlFilter</filter-name>
+		<filter-class>me.paul.yiblog.filter.AdminPowerControlFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>adminPowerControlFilter</filter-name>
+		<url-pattern>/admin/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	<filter>
+		<filter-name>userPowerControlFilter</filter-name>
+		<filter-class>me.paul.yiblog.filter.UserPowerControlFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>userPowerControlFilter</filter-name>
+		<url-pattern>/user/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>loadAnnouncementFilterProxy</filter-name>
+		<filter-class>me.paul.yiblog.filter.LoadAnnouncementFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loadAnnouncementFilterProxy</filter-name>
+		<url-pattern>/index.jsp</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>loadSiteInfoFilterProxy</filter-name>
+		<filter-class>me.paul.yiblog.filter.LoadSiteInfoFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>loadSiteInfoFilterProxy</filter-name>
+		<url-pattern>/index.jsp</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>

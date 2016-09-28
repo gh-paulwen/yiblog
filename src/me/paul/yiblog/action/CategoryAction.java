@@ -8,9 +8,6 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class CategoryAction extends ActionSupport {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1534344860213406467L;
 	
 	private ICategoryService cateService;
@@ -32,12 +29,12 @@ public class CategoryAction extends ActionSupport {
 	public String save() {
 		category.setPassageCount(0);
 		cateService.save(category);
-		return SUCCESS;
+		return "index";
 	}
 	
 	public String update(){
 		cateService.update(category);
-		return SUCCESS;
+		return "index";
 	}
 	
 	public String get(){

@@ -8,8 +8,6 @@ public interface IStatisticService {
 
 	void save(Statistic statistic);
 
-	void delete(Statistic statistic);
-
 	void update(Statistic statistic);
 
 	Statistic get(Serializable id);

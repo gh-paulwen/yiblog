@@ -9,12 +9,18 @@ public interface ICommentDao {
 
 	void save(Comment comment);
 
-	void delete(Comment comment);
-
 	void update(Comment comment);
 
 	Comment get(Serializable id);
 	
 	List<Comment> getByPassage(Serializable passageid);
+	
+	int getNewCommentCount(long toUserId);
+	
+	int getAllCommentCount(long toUserId);
+	
+	List<Comment> getNewComment(long toUserId);
+
+	List<Comment> getComment(long toUserId, int page, int commentPerPage);
 	
 }

@@ -9,8 +9,6 @@ public interface ISubCategoryService {
 
 	void save(SubCategory subCategory);
 
-	void delete(SubCategory subCategory);
-
 	void update(SubCategory subCategory);
 
 	SubCategory get(Serializable id);

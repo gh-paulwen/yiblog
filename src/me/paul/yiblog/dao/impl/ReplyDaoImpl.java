@@ -21,11 +21,6 @@ public class ReplyDaoImpl implements IReplyDao {
 	}
 
 	@Override
-	public void delete(Reply reply) {
-		util.delete(reply);
-	}
-
-	@Override
 	public void update(Reply reply) {
 		util.update(reply);
 	}
@@ -40,6 +35,38 @@ public class ReplyDaoImpl implements IReplyDao {
 	public List<Reply> getByComment(Serializable commentId) {
 		String hql = "from Reply r where r.comment.id = ?";
 		return (List<Reply>) util.query(hql, commentId);
+	}
+
+	@Override
+	public int getNewReplyCount(long toUserId) {
+		int count = 0;
+		String hql = "select count(r) from Reply as r where r.toUser.id = ? and r.newreply = 1";
+		count = util.getCount(hql, toUserId);
+		return count;
+	}
+
+	@Override
+	public List<Reply> getNewReply(long toUserId) {
+		String hql = "from Reply r where r.toUser.id = ? and r.newreply = 1";
+		@SuppressWarnings("unchecked")
+		List<Reply> list = (List<Reply>) util.query(hql, toUserId);
+		return list;
+	}
+
+	@Override
+	public List<Reply> getReply(long toUserId, int page, int replyPerPage) {
+		String hql = "from Reply r where r.toUser.id = ?";
+		@SuppressWarnings("unchecked")
+		List<Reply> list = (List<Reply>) util.limitQuery(hql, (page - 1) * replyPerPage, replyPerPage, toUserId);
+		return list;
+	}
+
+	@Override
+	public int getAllReplyCount(long toUserId) {
+		String hql = "select count(r) from Reply as r where r.toUser.id = ?";
+		int count = 0;
+		count = util.getCount(hql,toUserId);
+		return count;
 	}
 
 }

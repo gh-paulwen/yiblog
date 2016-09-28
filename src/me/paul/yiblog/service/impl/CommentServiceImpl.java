@@ -9,8 +9,8 @@ import me.paul.yiblog.service.ICommentService;
 
 public class CommentServiceImpl implements ICommentService {
 
-	private ICommentDao commentDao ;
-	
+	private ICommentDao commentDao;
+
 	public void setCommentDao(ICommentDao commentDao) {
 		this.commentDao = commentDao;
 	}
@@ -18,11 +18,6 @@ public class CommentServiceImpl implements ICommentService {
 	@Override
 	public void save(Comment comment) {
 		commentDao.save(comment);
-	}
-
-	@Override
-	public void delete(Comment comment) {
-		commentDao.delete(comment);
 	}
 
 	@Override
@@ -38,6 +33,26 @@ public class CommentServiceImpl implements ICommentService {
 	@Override
 	public List<Comment> getByPassage(Serializable passageid) {
 		return commentDao.getByPassage(passageid);
+	}
+
+	@Override
+	public int getNewCommentCount(long toUserId) {
+		return commentDao.getNewCommentCount(toUserId);
+	}
+
+	@Override
+	public List<Comment> getNewComment(long toUserId) {
+		return commentDao.getNewComment(toUserId);
+	}
+
+	@Override
+	public List<Comment> getComment(long toUserId, int page, int commentPerPage) {
+		return commentDao.getComment(toUserId, page, commentPerPage);
+	}
+
+	@Override
+	public int getAllCommentCount(long toUserId) {
+		return commentDao.getAllCommentCount(toUserId);
 	}
 
 }

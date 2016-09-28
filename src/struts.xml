@@ -17,32 +17,32 @@
     	
     	
     	<global-results>
-    		<result name="success">/success.jsp</result>
     		<result name="input">/input.jsp</result>
     		<result name="index" type="redirect">/index.jsp</result>
     		<result name="signin" type="redirect">/signin.jsp</result>
     	</global-results>
     	
     	<action name="cate_*" class="categoryAction" method="{1}">
-    	<result name="showCate">/showCate.jsp</result>
     	</action>
     	
-    	<action name="pass_*" class="passageAction" method="{1}">
-    		<result name="viewPassage" type="dispatcher">/viewPassage.jsp</result>
-    		<result name="passageList" type="dispatcher">/passageList.jsp</result>
+    	<action name="pass_get" class="passageAction" method="get">
     		<interceptor-ref name="loadCommentStack">
     			<param name="passageid">${passage.id}</param>
     		</interceptor-ref>
+    		<result name="viewPassage" type="dispatcher">/viewPassage.jsp</result>
     	</action>
     	
-    	<action name="power_*" class="powerAction" method="{1}"></action>
+    	<action name="pass_*" class="passageAction" method="{1}">
+    		<result name="passageList" type="dispatcher">/passageList.jsp</result>
+    		<result name="editPassage">/admin/editPassage.jsp</result>
+    	</action>
     	
     	<action name="user_*" class="userAction" method="{1}">
     		<result name="input">/signup.jsp</result>
     		<result name="viewUser">/viewUser.jsp</result>
-    		<result name="viewUsers">/viewUsers.jsp</result>
-    		<result name="toLastUrl" type="redirectAction">
-    		</result>
+    		<result name="viewUsers">/admin/viewUsers.jsp</result>
+    		<result name="signin">/signin.jsp</result>
+    		<result name="editUser">/user/editUser.jsp</result>
     	</action>
     	
     	<action name="comment_*" class="commentAction" method="{1}">
@@ -50,11 +50,15 @@
     			<param name="actionName">pass_get</param>
     			<param name="passage.id">${passage.id}</param>
     		</result>
+    		<result name="newComment">/admin/newComment.jsp</result>
+    		<result name="commentList">/admin/commentList.jsp</result>
+    		<result name="markRead" type="redirectAction">
+    			<param name="actionName">comment_getNewComment</param>
+    			<param name="toUser.id">${toUser.id}</param>
+    		</result>
     	</action>
     	
     	<action name="resource_*" class="resourceAction" method="{1}"></action>
-    	
-    	<action name="statistic_*" class="statisticAction" method="{1}"></action>
     	
     	<action name="subCategory_*" class="subCategoryAction" method="{1}"></action>
     	
@@ -63,11 +67,15 @@
     			<param name="actionName">pass_get</param>
     			<param name="passage.id">${passageid}</param>
     		</result>
+    		<result name="newReply">/user/newReply.jsp</result>
+    		<result name="replyList">/user/replyList.jsp</result>
+    		<result name="markRead" type="redirectAction">
+    			<param name="actionName">reply_getNewReply</param>
+    			<param name="toUser.id">${toUser.id}</param>
+    		</result>
     	</action>
     	
-    	<action name="ajax_*" class="ajaxAction" method="{1}">
-    	</action>
+    	<action name="announcement_*" class="announcementAction" method="{1}"></action>
     	
-    	<action name="upload" class="uploadImageAction"></action>
     </package> 
 </struts>

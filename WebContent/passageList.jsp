@@ -6,44 +6,137 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>文章列表</title>
-<link rel="stylesheet" href="dist/css/bootstrap.css">
-<script type="text/javascript" src="dist/js/jquery.js"></script>
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath }/dist/css/bootstrap.css">
+<link rel="shortcut icon" href="icon.ico">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/dist/js/jquery.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		if ($("#inputPageCount").val() == "0") {
+			$("#ulPage").hide();
+		}
+
+		if ($("#inputCurrentPage").val() == "1") {
+			$("#lastPageLi").hide();
+		}
+		
+		if ($("#inputCurrentPage").val() == $("#inputPageCount").val()) {
+			$("#nextPageLi").hide();
+		}
+		
+		if($("#subCategoryCount").val() == ""){
+			$("#sidebar").hide();
+		}
+	});
+</script>
 </head>
 <body>
 	<jsp:include page="nav.jsp"></jsp:include>
-	<jsp:include page="top.jsp"></jsp:include>
-	<div class="container">
-		<h1 class="text-danger">文章列表&nbsp;:&nbsp;${requestScope.currentCate}</h1>
-		<br>
-		<ul class="list-group">
-			<s:iterator value="%{#request.listPassage}" var="passage">
-				<s:url action="pass_get" var="url">
-					<s:param name="passage.id" value="%{#passage.id}" />
-				</s:url>
-				<li class="list-group-item"><h4>
-						<a href="<s:property value="#url"/>"><s:property
-								value="%{#passage.title}" /></a><small>&nbsp;&nbsp;分类:<s:property
-								value="#passage.category.name" />&nbsp;&nbsp; 作者:<s:property
-								value="#passage.author.name" />&nbsp;&nbsp; 阅读次数:<s:property
-								value="#passage.readtime" />&nbsp;&nbsp; 撰写时间:<s:property
-								value="#passage.writetime" /></small>
-					</h4></li>
+	<div class="container-fluid container">
+		<div class="row">
+			<div class="col-xs-9 col-lg-10 main">
+				<div class="row">
+					<div class="col-xs-4">
+						<s:url action="pass_page" var="ascUrl" escapeAmp="false">
+							<s:param name="page" value="1" />
+							<s:param name="passagePerPage" value="%{passagePerPage}" />
+							<s:param name="category.id" value="%{category.id}" />
+							<s:param name="subCategory.id" value="%{subCategory.id}" />
+						</s:url>
+						<a class="btn btn-primary" href="<s:property value="#ascUrl"/>">时间升序</a>
+						<s:url action="pass_page?order=reverse" var="descUrl"
+							escapeAmp="false">
+							<s:param name="page" value="1" />
+							<s:param name="passagePerPage" value="%{passagePerPage}" />
+							<s:param name="category.id" value="%{category.id}" />
+							<s:param name="subCategory.id" value="%{subCategory.id}" />
+						</s:url>
+						<a class="btn btn-primary" href="<s:property value="#descUrl"/>">时间降序</a>
+					</div>
+					<div class="col-xs-8">
+						<h1 class="text-danger">文章列表&nbsp;:&nbsp;${requestScope.currentCate}</h1>
+					</div>
+				</div>
 				<br>
-			</s:iterator>
-		</ul>
-		<ul title="页数" class="breadcrumb">
-			<s:iterator value="%{#request.mapPage}" var="page">
-				<li><s:url escapeAmp="false" var="url" value="pass_page">
-						<s:param name="page" value="%{#page.value}" />
-						<s:param name="passagePerPage" value="%{passagePerPage}"></s:param>
-						<s:param name="category" value="%{category.id}" />
-						<s:param name="subCategory" value="%{subCategory.id}" />
-					</s:url> <a href="<s:property value="#url"/>"> <s:property
-							value="#page.key" />
-				</a></li>
-			</s:iterator>
-		</ul>
+				<ul class="list-group">
+					<s:iterator value="%{#request.listPassage}" var="passage">
+						<s:url action="pass_get" var="toPassageurl">
+							<s:param name="passage.id" value="%{#passage.id}" />
+						</s:url>
+						<li class="list-group-item">
+							<h4>
+								<a href="<s:property value="#toPassageurl"/>"> <s:property
+										value="%{#passage.title}" />
+								</a> <small>&nbsp;&nbsp;分类:<s:property
+										value="#passage.category.name" /> &nbsp;&nbsp; 撰写时间:<s:property
+										value="#passage.writetime" />
+								</small>
+							</h4>
+						</li>
+						<br>
+					</s:iterator>
+				</ul>
+				<input type="hidden" id="inputCurrentPage"
+					value="<s:property value="#request.currentPage"/>"> <input
+					type="hidden" id="inputPageCount"
+					value="<s:property value="#request.pageCount"/>">
+				<ul id="ulPage" title="页数" class="breadcrumb">
+					<li id="lastPageLi"><s:url escapeAmp="false" var="lastPageUrl"
+							value="pass_page">
+							<s:param name="page" value="%{#request.lastPage}" />
+							<s:param name="passagePerPage" value="%{passagePerPage}" />
+							<s:param name="category" value="%{category.id}" />
+							<s:param name="subCategory" value="%{subCategory.id}" />
+							<s:param name="order" value="%{order}" />
+						</s:url> <a href="<s:property value="#lastPageUrl"/>"> 上一页 </a></li>
+					<s:iterator value="%{#request.mapPage}" var="page">
+						<li><s:url escapeAmp="false" var="pageUrl" value="pass_page">
+								<s:param name="page" value="%{#page.value}" />
+								<s:param name="passagePerPage" value="%{passagePerPage}" />
+								<s:param name="category.id" value="%{category.id}" />
+								<s:param name="subCategory.id" value="%{subCategory.id}" />
+								<s:param name="order" value="%{order}" />
+							</s:url> <a href="<s:property value="#pageUrl"/>"> <s:property
+									value="#page.key" />
+						</a></li>
+					</s:iterator>
+					<li id="nextPageLi"><s:url escapeAmp="false" var="nextPageUrl"
+							value="pass_page">
+							<s:param name="page" value="%{#request.nextPage}" />
+							<s:param name="passagePerPage" value="%{passagePerPage}" />
+							<s:param name="category.id" value="%{category.id}" />
+							<s:param name="subCategory.id" value="%{subCategory.id}" />
+							<s:param name="order" value="%{order}" />
+						</s:url> <a href="<s:property value="#nextPageUrl"/>"> 下一页 </a></li>
+					<li><s:url escapeAmp="false" var="totalPageUrl"
+							value="pass_page">
+							<s:param name="page" value="%{#request.pageCount}" />
+							<s:param name="passagePerPage" value="%{passagePerPage}" />
+							<s:param name="category.id" value="%{category.id}" />
+							<s:param name="subCategory.id" value="%{subCategory.id}" />
+							<s:param name="order" value="%{order}" />
+						</s:url> 共&nbsp;<a href="<s:property value="#totalPageUrl"/>">${requestScope.pageCount}</a>&nbsp;页</li>
+				</ul>
+			</div>
+			<div class="col-xs-3 col-lg-2 sidebar" id="sidebar">
+				<h3>二级分类</h3>
+				<input id="subCategoryCount" type="hidden" value="${subCategoryCount }">
+				<ul class="nav nav-sidebar">
+					<s:iterator value="%{#request.listSubCategory}" var="subCategory" status="vs">
+						<s:url escapeAmp="false" var="subCategoryUrl" action="pass_page">
+							<s:param name="page" value="1"/>
+							<s:param name="passagePerPage" value="10"/>
+							<s:param name="subCategory.id" value="%{#subCategory.id}"/>
+						</s:url>
+						<li><a href="<s:property value="#subCategoryUrl"/>"><s:property value="#subCategory.name"/></a></li>
+					</s:iterator>
+				</ul>
+			</div>
+		</div>
 	</div>
-	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath }/dist/js/bootstrap.js"></script>
 </body>
 </html>
