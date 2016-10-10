@@ -36,28 +36,39 @@
 	<jsp:include page="nav.jsp"></jsp:include>
 	<div class="container-fluid container">
 		<div class="row">
+			<div class="col-xs-3 col-lg-2 sidebar" id="sidebar">
+				<h3>二级分类</h3>
+				<input id="subCategoryCount" type="hidden" value="${subCategoryCount }">
+				<ul class="nav nav-sidebar">
+					<s:iterator value="%{#request.listSubCategory}" var="subCategory" status="vs">
+						<s:url escapeAmp="false" var="subCategoryUrl" action="pass_page">
+							<s:param name="page" value="1"/>
+							<s:param name="passagePerPage" value="10"/>
+							<s:param name="subCategory.id" value="%{#subCategory.id}"/>
+						</s:url>
+						<li><a href="<s:property value="#subCategoryUrl"/>"><s:property value="#subCategory.name"/></a></li>
+					</s:iterator>
+				</ul>
+			</div>
 			<div class="col-xs-9 col-lg-10 main">
-				<div class="row">
-					<div class="col-xs-4">
-						<s:url action="pass_page" var="ascUrl" escapeAmp="false">
-							<s:param name="page" value="1" />
-							<s:param name="passagePerPage" value="%{passagePerPage}" />
-							<s:param name="category.id" value="%{category.id}" />
-							<s:param name="subCategory.id" value="%{subCategory.id}" />
-						</s:url>
-						<a class="btn btn-primary" href="<s:property value="#ascUrl"/>">时间升序</a>
-						<s:url action="pass_page?order=reverse" var="descUrl"
-							escapeAmp="false">
-							<s:param name="page" value="1" />
-							<s:param name="passagePerPage" value="%{passagePerPage}" />
-							<s:param name="category.id" value="%{category.id}" />
-							<s:param name="subCategory.id" value="%{subCategory.id}" />
-						</s:url>
-						<a class="btn btn-primary" href="<s:property value="#descUrl"/>">时间降序</a>
-					</div>
-					<div class="col-xs-8">
-						<h1 class="text-danger">文章列表&nbsp;:&nbsp;${requestScope.currentCate}</h1>
-					</div>
+				<div >
+					<s:url action="pass_page" var="ascUrl" escapeAmp="false">
+						<s:param name="page" value="1" />
+						<s:param name="passagePerPage" value="%{passagePerPage}" />
+						<s:param name="category.id" value="%{category.id}" />
+						<s:param name="subCategory.id" value="%{subCategory.id}" />
+					</s:url>
+					<a class="btn btn-primary" href="<s:property value="#ascUrl"/>">时间升序</a>
+					<s:url action="pass_page?order=reverse" var="descUrl" escapeAmp="false">
+						<s:param name="page" value="1" />
+						<s:param name="passagePerPage" value="%{passagePerPage}" />
+						<s:param name="category.id" value="%{category.id}" />
+						<s:param name="subCategory.id" value="%{subCategory.id}" />
+					</s:url>
+					<a class="btn btn-primary" href="<s:property value="#descUrl"/>">时间降序</a>
+				</div>
+				<div>
+					<h1 class="text-danger text-center">文章列表&nbsp;:&nbsp;${requestScope.currentCate}</h1>
 				</div>
 				<br>
 				<ul class="list-group">
@@ -70,7 +81,7 @@
 								<a href="<s:property value="#toPassageurl"/>"> <s:property
 										value="%{#passage.title}" />
 								</a> <small>&nbsp;&nbsp;分类:<s:property
-										value="#passage.category.name" /> &nbsp;&nbsp; 撰写时间:<s:property
+										value="#passage.subCategory.name" /> &nbsp;&nbsp; 撰写时间:<s:property
 										value="#passage.writetime" />
 								</small>
 							</h4>
@@ -120,20 +131,7 @@
 						</s:url> 共&nbsp;<a href="<s:property value="#totalPageUrl"/>">${requestScope.pageCount}</a>&nbsp;页</li>
 				</ul>
 			</div>
-			<div class="col-xs-3 col-lg-2 sidebar" id="sidebar">
-				<h3>二级分类</h3>
-				<input id="subCategoryCount" type="hidden" value="${subCategoryCount }">
-				<ul class="nav nav-sidebar">
-					<s:iterator value="%{#request.listSubCategory}" var="subCategory" status="vs">
-						<s:url escapeAmp="false" var="subCategoryUrl" action="pass_page">
-							<s:param name="page" value="1"/>
-							<s:param name="passagePerPage" value="10"/>
-							<s:param name="subCategory.id" value="%{#subCategory.id}"/>
-						</s:url>
-						<li><a href="<s:property value="#subCategoryUrl"/>"><s:property value="#subCategory.name"/></a></li>
-					</s:iterator>
-				</ul>
-			</div>
+			
 		</div>
 	</div>
 	<script type="text/javascript"

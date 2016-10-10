@@ -32,9 +32,7 @@
 					$("#subCategorySelect").append(nodeOption);
 				}					
 			},
-			error: function(){
-				alert("error");
-			}
+			error: function(){}
 		});
 		$("#categorySelect").change(function(){
 			$.ajax({
@@ -55,9 +53,7 @@
 						$("#subCategorySelect").append(nodeOption);
 					}					
 				},
-				error: function(){
-					alert("error");
-				}
+				error: function(){}
 			});
 		});
 	});
@@ -91,7 +87,7 @@
 	
 	<script type="text/javascript">
 			var editor = CKEDITOR.replace('passage.content',{
-				height : '600px',
+				height : '400px',
 				filebrowserBrowseUrl : '${pageContext.request.contextPath}/ckfinder/ckfinder.html',
 				filebrowserImageBrowseUrl : '${pageContext.request.contextPath}/ckfinder/ckfinder.html?Type=Images',
 				filebrowserFlashBrowseUrl : '${pageContext.request.contextPath}/ckfinder/ckfinder.html?Type=Flash',

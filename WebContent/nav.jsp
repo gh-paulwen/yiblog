@@ -82,12 +82,11 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath }/index.jsp">WJY的博客</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath }/index.jsp">WJY的笔记本</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
             	<li><a href="${pageContext.request.contextPath }/about.jsp">关于</a></li>
-            	<li><a href="${pageContext.request.contextPath }/support.jsp">捐赠</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li id="lisignin"><a

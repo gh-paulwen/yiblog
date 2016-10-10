@@ -92,44 +92,37 @@ $(document).ready(function(){
 		<div class="row">
 			<div class="col-xs-12">
 
-				<input type="hidden" id="currentUserId"
-					value="${sessionScope.currentUser.id }"> <input
-					type="hidden" id="currentUserPower"
-					value="${sessionScope.currentUser.power.id }">
-				<div class="row">
-					<div style="display: none;" id="editPassageDiv" class="col-xs-2">
-						<a href="<s:property value="#url"/>" class="btn btn-primary">编辑文章</a>
-					</div>
-					<div class="col-xs-10 blog-post">
-						<h2 class="blog-post-title text-center">${passage.title }</h2>
-						<p class="blog-post-meta text-center"><s:property value="#request.passage.writetime"/>&nbsp;由<a href="${pageContext.request.contextPath }/about.jsp">${passage.author.name }</a>发布&nbsp;阅读次数&nbsp;${passage.readtime }</p>
-						<div class="blog-main">${passage.content }</div>
-					</div>
+				<input type="hidden" id="currentUserId" value="${sessionScope.currentUser.id }"> 
+				<input type="hidden" id="currentUserPower" value="${sessionScope.currentUser.power.id }">
+
+				<div style="display: none;" id="editPassageDiv" class="col-xs-2">
 					<s:url var="url" action="pass_editPassage">
 						<s:param name="passage.id" value="%{#request.passage.id}" />
 					</s:url>
+					<a href="<s:property value="#url"/>" class="btn btn-primary">编辑文章</a>
 				</div>
-
+				
+				<div class="blog-post">
+					<h2 class="blog-post-title text-center">${passage.title }</h2>
+					<p class="blog-post-meta text-center"><s:property value="#request.passage.writetime"/>&nbsp;由<a href="${pageContext.request.contextPath }/about.jsp">${passage.author.name }</a>发布&nbsp;阅读次数&nbsp;${passage.readtime }</p>
+					<div class="blog-main">${passage.content }</div>
+				</div>
+								
 				<div class="row">
 					<div class="col-xs-8">
 						<button class="btn btn-primary" id="commentButton">添加评论</button>
 						<br> <br>
 						<form action="${pageContext.request.contextPath }/comment_save"
 							method="POST" id="commentForm" style="display: none;">
-							<input type="hidden" name="fromUser.id"
-								value="<s:property value="%{#session.currentUser.id}"/>" /> <input
-								type="hidden" name="toUser.id"
-								value="<s:property value="%{#request.passage.author.id}"/>" />
-							<input type="hidden" name="passage.id"
-								value="<s:property value="%{#request.passage.id}" />" />
-							<textarea class="form-control" name="comment.content" cols="50"
-								rows="2"></textarea>
+							<input type="hidden" name="fromUser.id"	value="<s:property value="%{#session.currentUser.id}"/>" /> 
+							<input type="hidden" name="toUser.id" value="<s:property value="%{#request.passage.author.id}"/>" />
+							<input type="hidden" name="passage.id" value="<s:property value="%{#request.passage.id}" />" />
+							<textarea class="form-control" name="comment.content" cols="50" rows="2"></textarea>
 							<input type="submit" value="提交">
 						</form>
 						<br> <br>
 						<ul class="list-group">
 							<s:iterator value="%{#request.mapComment}" status="vs" var="item">
-
 								<li class="list-group-item">
 									<div class="row">
 										<div class="col-xs-9">
@@ -188,16 +181,11 @@ $(document).ready(function(){
 									<form id="replyForm<s:property value="#vs.index"/>"
 										action="${pageContext.request.contextPath }/reply_save"
 										method="POST">
-										<input type="hidden" name="comment.id"
-											value="<s:property value="#item.key.id"/>"> <input
-											type="hidden" name="fromUser.id"
-											value="${sessionScope.currentUser.id }"> <input
-											type="hidden" name="passageid" value="${passage.id }">
-										<input type="hidden"
-											id="replyToUser<s:property value="#vs.index"/>" value=""
-											name="toUser.id">
-										<textarea class="form-control" rows="2" cols="40"
-											name="reply.content"></textarea>
+										<input type="hidden" name="comment.id" value="<s:property value="#item.key.id"/>"> 
+										<input type="hidden" name="fromUser.id"	value="${sessionScope.currentUser.id }"> 
+										<input type="hidden" name="passageid" value="${passage.id }">
+										<input type="hidden" id="replyToUser<s:property value="#vs.index"/>" value="" name="toUser.id">
+										<textarea class="form-control" rows="2" cols="40" name="reply.content"></textarea>
 										<input type="submit" value="提交">
 									</form>
 								</li>

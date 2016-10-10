@@ -84,7 +84,7 @@
 	
 	<script type="text/javascript">
 			var editor = CKEDITOR.replace('passage.content',{
-				height : '600px',
+				height : '400px',
 				filebrowserBrowseUrl : 'ckfinder/ckfinder.html',
 				filebrowserImageBrowseUrl : 'ckfinder/ckfinder.html?Type=Images',
 				filebrowserFlashBrowseUrl : 'ckfinder/ckfinder.html?Type=Flash',

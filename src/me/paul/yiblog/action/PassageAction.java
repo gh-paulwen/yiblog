@@ -4,9 +4,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpSession;
-
 import me.paul.yiblog.entity.Announcement;
 import me.paul.yiblog.entity.Category;
 import me.paul.yiblog.entity.Passage;
@@ -24,17 +22,17 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class PassageAction extends ActionSupport {
-	
+
 	private static final long serialVersionUID = 1306752896985884525L;
 
 	private IPassageService passService;
-	
+
 	private ICategoryService cateService;
-	
+
 	private ISubCategoryService subCategoryService;
-	
+
 	private IAnnouncementService announcementService;
-	
+
 	public void setAnnouncementService(IAnnouncementService announcementService) {
 		this.announcementService = announcementService;
 	}
@@ -52,27 +50,27 @@ public class PassageAction extends ActionSupport {
 	}
 
 	private Passage passage;
-	
+
 	private Category category;
-	
+
 	private SubCategory subCategory;
-	
+
 	private User author;
-	
+
 	private int page;
-	
+
 	private int passagePerPage;
-	
+
 	private String order;
-	
+
 	public String getOrder() {
 		return order;
 	}
-	
+
 	public void setOrder(String order) {
 		this.order = order;
 	}
-	
+
 	public int getPassagePerPage() {
 		return passagePerPage;
 	}
@@ -117,7 +115,7 @@ public class PassageAction extends ActionSupport {
 		this.category = category;
 	}
 
-	//添加文章
+	// 添加文章
 	public String save() {
 		passage.setCategory(category);
 		passage.setReadtime(0);
@@ -139,13 +137,13 @@ public class PassageAction extends ActionSupport {
 		return "index";
 	}
 
-	//获取文章
+	// 获取文章
 	public String get() {
 		HttpSession session = ServletActionContext.getRequest().getSession();
 		passage = passService.get(passage.getId());
 		@SuppressWarnings("unchecked")
 		List<Long> hasReadPassages = (List<Long>) session.getAttribute("read");
-		if(hasReadPassages == null){
+		if (hasReadPassages == null) {
 			return "input";
 		}
 		if (!hasReadPassages.contains(passage.getId())) {
@@ -160,18 +158,18 @@ public class PassageAction extends ActionSupport {
 		ActionContext.getContext().getContextMap().put("passage", passage);
 		return "viewPassage";
 	}
-	
-	//获取文章以编辑
-	public String editPassage(){
+
+	// 获取文章以编辑
+	public String editPassage() {
 		long id = passage.getId();
 		Passage passage = passService.get(id);
 		ActionContext.getContext().getContextMap().put("passageGet", passage);
 		System.out.println(passage.getContent());
 		return "editPassage";
 	}
-	
-	//确定提交编辑
-	public synchronized String submitUpdate(){
+
+	// 确定提交编辑
+	public synchronized String submitUpdate() {
 		Passage passageGet = passService.get(passage.getId());
 		passageGet.setContent(passage.getContent());
 		passageGet.setTitle(passage.getTitle());
@@ -181,42 +179,48 @@ public class PassageAction extends ActionSupport {
 		return "index";
 	}
 
-	//分页
+	// 分页
 	public String page() {
 		int count = 0;
 		List<Passage> list = Collections.emptyList();
-		Map<String,Object> request = ActionContext.getContext().getContextMap();
-		if(category != null){
+		Map<String, Object> request = ActionContext.getContext()
+				.getContextMap();
+		if (category != null) {
 			category = cateService.get(category.getId());
 			count = category.getPassageCount();
 			request.put("currentCate", category.getName());
-			List<SubCategory> listSub = subCategoryService.getByCategory(category.getId());
+			List<SubCategory> listSub = subCategoryService
+					.getByCategory(category.getId());
 			request.put("listSubCategory", listSub);
 			request.put("subCategoryCount", listSub.size());
-			if(order==null){
-				list = passService.categoryPage(page, passagePerPage, category.getId());
-			}else if(order.equals("reverse")){
-				list = passService.categoryPage(page, count, category.getId(), true);
+			if (order == null) {
+				list = passService.categoryPage(page, passagePerPage,
+						category.getId());
+			} else if (order.equals("reverse")) {
+				list = passService.categoryPage(page, count, category.getId(),
+						true);
 			}
-			
+
 		}
-		if(subCategory != null){
+		if (subCategory != null) {
 			subCategory = subCategoryService.get(subCategory.getId());
 			count = subCategory.getPassageCount();
 			request.put("currentCate", subCategory.getName());
-			if(order== null){
-				list = passService.subCategoryPage(page, passagePerPage, subCategory.getId());
-			}else if(order.equals("reverse")){
-				list = passService.subCategoryPage(page, passagePerPage, subCategory.getId(),true);
+			if (order == null) {
+				list = passService.subCategoryPage(page, passagePerPage,
+						subCategory.getId());
+			} else if (order.equals("reverse")) {
+				list = passService.subCategoryPage(page, passagePerPage,
+						subCategory.getId(), true);
 			}
 		}
-		if(category == null && subCategory == null){
+		if (category == null && subCategory == null) {
 			count = cateService.getTotalPassageCount();
 			request.put("currentCate", "all");
-			if(order == null){
+			if (order == null) {
 				list = passService.page(page, passagePerPage);
-			}else if(order.equals("reverse")){
-				list = passService.page(page, passagePerPage,true);
+			} else if (order.equals("reverse")) {
+				list = passService.page(page, passagePerPage, true);
 			}
 		}
 		int pageCount = (int) Math.ceil(count * 1.0 / passagePerPage);

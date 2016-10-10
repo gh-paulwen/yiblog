@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>首页</title>
+<title>WJY的笔记本</title>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/dist/css/bootstrap.css">
 <link rel="shortcut icon" href="icon.ico">
@@ -56,7 +56,7 @@
 								<a href="<s:property value="#url"/>"> <s:property
 										value="#passage.title" />
 								</a> <small>&nbsp;&nbsp;分类:<s:property
-										value="#passage.category.name" /> &nbsp;&nbsp; 阅读次数:<s:property
+										value="#passage.subCategory.name" /> &nbsp;&nbsp; 阅读次数:<s:property
 										value="#passage.readtime" />
 								</small>
 							</h4>
@@ -75,7 +75,7 @@
 								<a href="<s:property value="#url"/>"> <s:property
 										value="#passage.title" />
 								</a> <small>&nbsp;&nbsp;分类:<s:property
-										value="#passage.category.name" /> &nbsp;&nbsp; 撰写时间:<s:property
+										value="#passage.subCategory.name" /> &nbsp;&nbsp; 撰写时间:<s:property
 										value="#passage.writetime" />
 								</small>
 							</h4>
