@@ -10,9 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import me.paul.yiblog.entity.Announcement;
-import me.paul.yiblog.entity.Statistic;
 import me.paul.yiblog.service.IAnnouncementService;
-import me.paul.yiblog.service.IStatisticService;
 
 public class LoadSiteInfoFilter implements Filter{
 
@@ -23,25 +21,17 @@ public class LoadSiteInfoFilter implements Filter{
 	
 	private IAnnouncementService announcementService;
 	
-	private IStatisticService statisticService;
-	
 	public void setAnnouncementService(IAnnouncementService announcementService) {
 		this.announcementService = announcementService;
 	}
 	
-	public void setStatisticService(IStatisticService statisticService) {
-		this.statisticService = statisticService;
-	}
-
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		Announcement buildSite = announcementService.get(2l);
 		Announcement lastUpdateTime = announcementService.get(3l);
-		Statistic totaltime = statisticService.get(1l);
 		request.setAttribute("buildSite", buildSite);
 		request.setAttribute("lastUpdate", lastUpdateTime);
-		request.setAttribute("totaltime", totaltime);
 		chain.doFilter(request, response);
 	}
 

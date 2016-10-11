@@ -25,10 +25,6 @@
 		if ($("#inputCurrentPage").val() == $("#inputPageCount").val()) {
 			$("#nextPageLi").hide();
 		}
-		
-		if($("#subCategoryCount").val() == ""){
-			$("#sidebar").hide();
-		}
 	});
 </script>
 </head>
@@ -36,20 +32,7 @@
 	<jsp:include page="nav.jsp"></jsp:include>
 	<div class="container-fluid container">
 		<div class="row">
-			<div class="col-xs-3 col-lg-2 sidebar" id="sidebar">
-				<h3>二级分类</h3>
-				<input id="subCategoryCount" type="hidden" value="${subCategoryCount }">
-				<ul class="nav nav-sidebar">
-					<s:iterator value="%{#request.listSubCategory}" var="subCategory" status="vs">
-						<s:url escapeAmp="false" var="subCategoryUrl" action="pass_page">
-							<s:param name="page" value="1"/>
-							<s:param name="passagePerPage" value="10"/>
-							<s:param name="subCategory.id" value="%{#subCategory.id}"/>
-						</s:url>
-						<li><a href="<s:property value="#subCategoryUrl"/>"><s:property value="#subCategory.name"/></a></li>
-					</s:iterator>
-				</ul>
-			</div>
+			
 			<div class="col-xs-9 col-lg-10 main">
 				<div >
 					<s:url action="pass_page" var="ascUrl" escapeAmp="false">
@@ -131,7 +114,19 @@
 						</s:url> 共&nbsp;<a href="<s:property value="#totalPageUrl"/>">${requestScope.pageCount}</a>&nbsp;页</li>
 				</ul>
 			</div>
-			
+			<div class="col-xs-3 col-lg-2 sidebar">
+				<h3>二级分类</h3>
+				<ul class="nav nav-sidebar">
+					<s:iterator value="%{#request.listSubCategory}" var="subCategory" status="vs">
+						<s:url escapeAmp="false" var="subCategoryUrl" action="pass_page">
+							<s:param name="page" value="1"/>
+							<s:param name="passagePerPage" value="10"/>
+							<s:param name="subCategory.id" value="%{#subCategory.id}"/>
+						</s:url>
+						<li><a href="<s:property value="#subCategoryUrl"/>"><s:property value="#subCategory.name"/></a></li>
+					</s:iterator>
+				</ul>
+			</div>
 		</div>
 	</div>
 	<script type="text/javascript"

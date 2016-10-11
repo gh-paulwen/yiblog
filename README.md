@@ -7,3 +7,5 @@
 框架 : struts 2.3.4.1 , spring 4.2.7 , hibernate 3.6.0
 
 前端框架 : bootstrap , jquery , ckeditor ,ckfinder 等等
+
+代码量大概6000左右

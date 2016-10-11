@@ -192,7 +192,6 @@ public class PassageAction extends ActionSupport {
 			List<SubCategory> listSub = subCategoryService
 					.getByCategory(category.getId());
 			request.put("listSubCategory", listSub);
-			request.put("subCategoryCount", listSub.size());
 			if (order == null) {
 				list = passService.categoryPage(page, passagePerPage,
 						category.getId());
@@ -206,6 +205,9 @@ public class PassageAction extends ActionSupport {
 			subCategory = subCategoryService.get(subCategory.getId());
 			count = subCategory.getPassageCount();
 			request.put("currentCate", subCategory.getName());
+			List<SubCategory> listSub = subCategoryService
+					.getByCategory(subCategory.getCategory().getId());
+			request.put("listSubCategory", listSub);
 			if (order == null) {
 				list = passService.subCategoryPage(page, passagePerPage,
 						subCategory.getId());

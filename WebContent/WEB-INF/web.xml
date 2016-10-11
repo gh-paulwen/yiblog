@@ -66,19 +66,10 @@
 		<url-pattern>/admin/addPass.jsp</url-pattern>
 		<url-pattern>/admin/addCates.jsp</url-pattern>
 		<url-pattern>/admin/editPassage.jsp</url-pattern>
-		<url-pattern>/index.jsp</url-pattern>
+		<url-pattern>/nav.jsp</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
-	</filter-mapping>
-
-	<!-- 用于计数网站的访问量 -->
-	<filter>
-		<filter-name>aggregateFilterProxy</filter-name>
-		<filter-class>me.paul.yiblog.filter.AggregateFilterProxy</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>aggregateFilterProxy</filter-name>
-		<url-pattern>/*</url-pattern>
+		<dispatcher>INCLUDE</dispatcher>
 	</filter-mapping>
 
 	<!-- 加载首页的文章 -->

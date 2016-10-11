@@ -42,7 +42,6 @@
 				<value>hbm/Passage.hbm.xml</value>
 				<value>hbm/Power.hbm.xml</value>
 				<value>hbm/Reply.hbm.xml</value>
-				<value>hbm/Statistic.hbm.xml</value>
 				<value>hbm/SubCategory.hbm.xml</value>
 				<value>hbm/User.hbm.xml</value>
 				<value>hbm/Announcement.hbm.xml</value>
@@ -69,10 +68,6 @@
 		<property name="util" ref="hibernateUtil" />
 	</bean>
 	<bean id="userDao" class="me.paul.yiblog.dao.impl.UserDaoImpl"
-		scope="singleton">
-		<property name="util" ref="hibernateUtil" />
-	</bean>
-	<bean id="statisticDao" class="me.paul.yiblog.dao.impl.StatisticDaoImpl"
 		scope="singleton">
 		<property name="util" ref="hibernateUtil" />
 	</bean>
@@ -106,10 +101,6 @@
 	<bean id="userService" class="me.paul.yiblog.service.impl.UserServiceImpl"
 		scope="singleton">
 		<property name="userDao" ref="userDao" />
-	</bean>
-	<bean id="statisticService" class="me.paul.yiblog.service.impl.StatisticServiceImpl"
-		scope="singleton">
-		<property name="statisticDao" ref="statisticDao" />
 	</bean>
 	<bean id="subCategoryService" class="me.paul.yiblog.service.impl.SubCategoryServiceImpl"
 		scope="singleton">
@@ -163,9 +154,6 @@
 	<bean id="loadCategoryFilter" class="me.paul.yiblog.filter.LoadCategoryFilter">
 		<property name="categoryService" ref="categoryService" />
 	</bean>
-	<bean id="aggregateFilter" class="me.paul.yiblog.filter.AggregateFilter">
-		<property name="statService" ref="statisticService" />
-	</bean>
 	<bean id="loadPassageFilter" class="me.paul.yiblog.filter.LoadPassageFilter">
 		<property name="count" value="5"></property>
 		<property name="passageService" ref="passageService"></property>
@@ -175,7 +163,6 @@
 	</bean>
 	<bean id="loadSiteInfoFilter" class="me.paul.yiblog.filter.LoadSiteInfoFilter">
 		<property name="announcementService" ref="announcementService"/>
-		<property name="statisticService" ref="statisticService"/>
 	</bean>
 
 	<!-- interceptor -->

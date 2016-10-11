@@ -24,27 +24,9 @@
 	<jsp:include page="nav.jsp"></jsp:include>
 
 	<div class="container-fluid container">
+	    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1260575777'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1260575777' type='text/javascript'%3E%3C/script%3E"));</script>
 		<div class="row">
-			
-			<div class="col-sm-3 col-md-2 sidebar">
-				<h3>分类</h3>
-				<ul class="nav nav-sidebar">
-					<s:iterator value="%{#request.listCategory}" var="category" status="vs">
-						<s:url escapeAmp="false" var="categoryUrl" action="pass_page">
-							<s:param name="page" value="1"/>
-							<s:param name="passagePerPage" value="10"/>
-							<s:param name="category.id" value="%{#category.id}"/>
-						</s:url>
-						<li><a href="<s:property value="#categoryUrl"/>"><s:property value="#category.name"/></a></li>
-					</s:iterator>
-					<li></li>
-				</ul>
-				<br><br><br>
-				<p>总访问次数&nbsp;:&nbsp;${totaltime.time }</p>
-				<p>${buildSite.content }&nbsp;:&nbsp;<s:property value="#request.buildSite.time"/></p>
-				<p>${lastUpdate.content }&nbsp;:&nbsp;<s:property value="#request.lastUpdate.time"/></p>
-			</div>
-			<div class="col-sm-9 col-md-10 main">
+			<div class="col-sm-8 col-md-9 main">
 				<h3>阅读量</h3>
 				<ul class="list-group">
 					<s:iterator value="%{#request.mostRead}" var="passage">
@@ -83,7 +65,15 @@
 					</s:iterator>
 				</ul>
 			</div>
-
+			<div class="col-sm-4 col-md-3">
+			  <br><br>
+			  <div class="well">
+			    <h3>learn by coding</h3>
+			    <h3>learn through code</h3>
+			  	建站时间：<s:property value="#request.buildSite.time"/><br>
+			  	最后更新：<s:property value="#request.lastUpdate.time"/><br>
+			  </div>
+			</div>
 
 		</div>
 		<jsp:include page="bottom.jsp"></jsp:include>

@@ -87,6 +87,12 @@
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
             	<li><a href="${pageContext.request.contextPath }/about.jsp">关于</a></li>
+            	<li class="dropdown">
+            	  <a href="#" class="dropdown-toggle" data-toggle="dropdown">分类<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <s:iterator value="%{#request.listCategory}" var="category"><s:url action="pass_page" var="categoryUrl" escapeAmp="false"><s:param name="page" value="1"/><s:param name="passagePerPage" value="10"/><s:param name="category.id" value="%{#category.id}"/></s:url><li><a href="<s:property value="#categoryUrl"/>"><s:property value="#category.name"/></a></li></s:iterator>
+                  </ul>
+            </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li id="lisignin"><a
@@ -115,6 +121,5 @@
       </nav>
 	</div>
 
-    <script src="dist/js/bootstrap.js"></script>
   </body>
 </html>
